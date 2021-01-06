@@ -2,7 +2,7 @@ title:              etcsetera
 email:              mwhitmeyer@berkeley.edu
 description:        theoretical computer science, but mainly etcetera
 author:             Michael Whitmeyer
-baseurl:            ""
+baseurl:            "/blog"
 url:                "https://mwhitmeyer.github.io"
 
 # Social Profiles

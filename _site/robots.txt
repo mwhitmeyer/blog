@@ -1,1 +1,1 @@
-Sitemap: https://mwhitmeyer.github.io/sitemap.xml
+Sitemap: https://mwhitmeyer.github.io/blog/sitemap.xml
