@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    Strong Parallel Repetition ... is False - etcsetera
+    
+  </title>
+
+  <meta name="description" content="Background First, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique ...">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/blog/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/blog/assets/vendor/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="/blog/assets/main.css">
+  <link rel="canonical" href="https://mwhitmeyer.github.io/blog/parallel-repetition/2021/01/12/parrep.html">
+  <link rel="alternate" type="application/rss+xml" title="etcsetera" href="/blog/feed.xml">
+
+</head>
+
+
+<body>
+
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">etcsetera</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="https://mwhitmeyer.github.io">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog/posts">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/blog/img/posts/parrepfoams.png')">
+  
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>Strong Parallel Repetition ... is False</h1>
+            
+            <h2 class="subheading">"As usual, goodness hardly puts up a fight" <br /> -Bill Watterson</h2>
+            
+            <span class="meta">Posted by
+              <a href="#">Michael Whitmeyer</a>
+              on January 12, 2021 &middot; <span class="reading-time" title="Estimated read time">
+   </span>
+  <!--  5 mins  read  -->
+
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h2 class="section-heading">Background</h2>
+<p>
+First, <a href="https://homes.cs.washington.edu/~jrl/">James Lee</a> typed up some wonderful <a href="https://tcsmath.wordpress.com/2008/09/21/lecture-1-cheating-with-foams/">notes</a> on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.
+
+</p>
+
+<p>
+
+  I hope to understand this connection with foams a bit better in the future (it's really quite beautiful and clever), but James Lee's notes are already quite nice on this subject, so in this post I am going to avoid beating the dead horse and instead talk about Ran Raz's counterexample to strong parallel repetition. But first, what is strong parallel repetition? What is parallel repetition? There's a lot of background to discuss here, and I will discuss it briefly, but if anything is unclear I refer you to the rest of the internet for sufficient background in order to not make this post ridiculously long.
+</p>
+<h2 class="section-heading">Some Background</h2>
+<p>
+  So first, we are going to concern ourselves with 2 prover 1 round games. In this setting, two provers (or players) \(P_1\) and \(P_2\), lets call them Alice and Bob, are trying to convince a verifier \(V\) of something. The verifier samples some \(x \in X\) and gives it to Alice, and also samples some \(y \in Y\) and gives it to Bob. Alice and Bob then, without communicating, must send back \(a\in A\) and \(b \in B\), respectively. \(X\) and \(Y\) are the input alphabets (over which there is some distribution \(\mu\) that the verifier and the provers both know) for Alice and Bob, and \(A\) and \(B\) are the outputs of Alice and Bob. The last thing we need to define the game is the verifier's <em>predicate</em>, which we abuse notation and denote as \(V(x,y,a,b)\). It outputs 1 if the verifier accepts Alice and Bob's answers, and 0 otherwise. Then, the value of the game \(\mathcal{G}\) is 
+
+  $$\mathsf{val}(\mathcal{G}) = \max_{f_A, f_B}\Pr[V(x,y,f_A(x), f_B(y)) = 1],$$
+  where \(f_A\) and \(f_B\) are Alice and Bob's "strategies". Note that in order for the game to be interesting at all, whatever Aice and Bob are trying to convince the verifier of should not (always) be true. Otherwise, the value of the game is 1, and there is not much to analyze here. I will also note that Alice and Bob <em>are</em> allowed to have shared randomness, but this does not help them. This is because any randomized strategy is just a distribution over deterministic strategies, so they can just pick the best of the deterministic strategies within their distribution.
+
+</p>
+
+<p>
+  Now that we have established what a (2 player 1 round) game is, we are ready to introduce the notion of parallel repetition. Suppose we have some game \(\mathcal{G}\) with \(\mathsf{val}(\mathcal{G}) = 1-\epsilon\). For any repetition of \(\mathcal{G}\), we say Alice and Bob "win" iff they win every single repetition. Clearly, if we repeat this game <em>in series</em> \(n\) times then the value of this repeated game will decay exponentially. The central question that we are concerned with here, however, is what happens when we repeat this game <em>in parallel</em>? Repeating the game in parallel means that instead of the verifier sending only one \(x\in X\) and one \(y \in Y\) to Alice and Bob respectively, instead the verifier sends \(x_1,...,x_n \in X\) and \(y_1, ... ,y_n \in Y\) and gets back from Alice and Bob \(a_1,...,a_n\) and \(b_1,...,b_n\), respectively. Let's denote this parallel repeated game as \(\mathcal{G^n}\). Then the value of this parallel repeated game is just the probability that Alice and Bob satisify every predicate, i.e. \(V(x_i, y_i, a_i, b_i) = 1 \,\, \forall i = 1,...,n\). 
+</p>
+<p>
+  What is the value of such a parallel repeated game? One might hope or even assume (as some did back when this problem first began gaining attention), that \(\mathsf{val}(\mathcal{G}^n) = (1-\epsilon)^n\); i.e. that the value of the repeated game decays exactly exponentially. This turns out to be false, which was first shown by Fortnow, and later an even simpler example was described by Feige. The example is instructive, and goes as follows.
+</p>
+<h2 class="section-heading">Raz's Counterexample</h2>
+<p>
+Ok, now we are ready to discuss Raz's counterexample to strong parallel repetition. First, 
+</p>
+
+        <hr>
+
+        <div class="clearfix">
+
+          
+          <a class="btn btn-primary float-left" href="/blog/intro/2021/01/06/intro.html" data-toggle="tooltip" data-placement="top" title="Intro">&larr; Previous<span class="d-none d-md-inline">
+              Post</span></a>
+          
+          
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          <li class="list-inline-item">
+            <a href="mailto:mwhitmeyer@berkeley.edu">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="far fa-envelope fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          <li class="list-inline-item">
+            <a href="https://twitter.com/mdwhitmeyer">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/mwhitmeyer">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Michael Whitmeyer 2021</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="/blog/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/blog/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/blog/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/blog/assets/scripts.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-XXXXXXXXX-X');
+</script>
+
+
+
+</body>
+
+</html>
