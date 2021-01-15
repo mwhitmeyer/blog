@@ -1,2 +1,46 @@
 // Import Core Clean Blog SCSS
 @import "../assets/vendor/startbootstrap-clean-blog/scss/clean-blog.scss";
+
+.theorem {
+  display: block;
+  margin: 12px 0;
+  font-style: italic;
+}
+.theorem:before {
+  content: "Theorem.";
+  font-weight: bold;
+  font-style: normal;
+}
+.lemma {
+  display: block;
+  margin: 12px 0;
+  font-style: italic;
+}
+.lemma:before {
+  content: "Lemma.";
+  font-weight: bold;
+  font-style: normal;
+}
+.proof {
+  display: block;
+  margin: 12px 0;
+  font-style: normal;
+}
+.proof:before {
+  content: "Proof.";
+  font-style: italic;
+}
+.proof:after {
+  content: "\25FC";
+  float:right;
+}
+.definition {
+  display: block;
+  margin: 12px 0;
+  font-style: normal;
+}
+.definition:before {
+  content: "Definition.";
+  font-weight: bold;
+  font-style: normal;
+}
