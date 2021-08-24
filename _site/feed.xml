@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T17:01:47-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T04:45:13-07:00</published><updated>2021-08-23T04:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T17:04:51-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -8,8 +8,8 @@ figure {
 }
 
 figcaption {
-  background-color: black;
-  color: white;
+  background-color: rgb(248, 247, 174);
+  color: rgb(0, 0, 0);
   font-style: italic;
   padding: 2px;
   text-align: center;
