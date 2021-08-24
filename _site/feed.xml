@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T18:32:18-07:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="http://localhost:4000/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>http://localhost:4000/blog/plagiarism/2021/08/23/obfuscated-plagiarism</id><content type="html" xml:base="http://localhost:4000/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T18:43:30-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -53,7 +53,7 @@ figcaption {
 
 
   &lt;figure&gt;
-    &lt;img src=&quot;../../../../img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;A visualization of the source retrieval and text alignment process described above, from the PAN conference summary papers.&lt;/figcaption&gt;
   &lt;/figure&gt;
  
@@ -156,7 +156,7 @@ Ok, now we can talk about more fun stuff! Or at least, stuff we have a bit more 
 &lt;h3 class=&quot;subsection-heading&quot;&gt;Combining Greediness and Optimality!&lt;/h3&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;../../../../img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
+  &lt;img src=&quot;/blog/img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
   &lt;figcaption&gt;A better explanation of what we are about to do than I could ever give.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -180,7 +180,7 @@ If you don't get this reference then you are either much older than me or much y
   And that's it! If you want to get really fancy you could make $\ell$ not fixed but rather dynamic, increasing as needed. Below is a nice example of how the overall algorithm works:
 
   &lt;figure&gt;
-    &lt;img src=&quot;../../../../img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;In the above, Greedy Tiling finds the exact match &quot;one of the 52 &quot;Best Loved Books of the Twentieth Century&quot;.&quot;, and then expands it using Smith-Waterman to catch a larger portion that has likely been plagiarized, with some obfuscation!&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/p&gt;
@@ -196,7 +196,7 @@ If you don't get this reference then you are either much older than me or much y
 
 &lt;p&gt;
   Now back to theory!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="http://localhost:4000/blog/parallel-repetition/2021/01/12/parrep.html" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>http://localhost:4000/blog/parallel-repetition/2021/01/12/parrep</id><content type="html" xml:base="http://localhost:4000/blog/parallel-repetition/2021/01/12/parrep.html">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="https://mwhitmeyer.github.io/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>https://mwhitmeyer.github.io/blog/parrep</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
 &lt;p&gt;
 Before I begin, &lt;a href=&quot;https://homes.cs.washington.edu/~jrl/&quot;&gt;James Lee&lt;/a&gt; typed up some wonderful &lt;a href=&quot;https://tcsmath.wordpress.com/2008/09/21/lecture-1-cheating-with-foams/&quot;&gt;notes&lt;/a&gt; on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.
 
@@ -282,7 +282,7 @@ Ok, now that I've gotten your hopes up about just a couple of the cool reasons p
 
 &lt;p&gt;
   Whew. That's all for this post!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="http://localhost:4000/blog/intro/2021/01/06/intro.html" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>http://localhost:4000/blog/intro/2021/01/06/intro</id><content type="html" xml:base="http://localhost:4000/blog/intro/2021/01/06/intro.html">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="https://mwhitmeyer.github.io/blog/intro" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>https://mwhitmeyer.github.io/blog/intro</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/intro">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
 &lt;p&gt;
 On this blog you will find a disorganized mix of theoretical computer science and general musings about literally anything else I find interesting. Hence the name of the blog (which is certainly not as clever as I think it is). A nice diverse potpourri/amalgam/melange of topics is healthy right? Says the guy who finds something he likes and ignores literally everything else. Anyway, this blog is for me, as I venture forth into the vast (and intimidating) depths of both theoretical computer science and life. With any luck, this blog will keep me entertained, learning, and accountable. 
 &lt;/p&gt;
