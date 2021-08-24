@@ -4,6 +4,10 @@ p { line-height: 1.5; margin: 30px 0; }
 
 p a { text-decoration: underline; }
 
+p a:link { color: blue; }
+
+p a:visited { color: purple; }
+
 h1, h2, h3, h4, h5, h6 { font-weight: 800; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
 a { color: #212529; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; transition: all 0.2s; }

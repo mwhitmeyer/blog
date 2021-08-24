@@ -11,6 +11,13 @@ p {
   a {
     text-decoration: underline;
   }
+
+  a:link {
+    color: blue;
+  }
+  a:visited {
+    color: purple;
+  }
 }
 
 h1,

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T17:06:50-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-08-23T17:56:27-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/plagiarism/2021/08/23/obfuscated-plagiarism.html">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -17,6 +17,8 @@ figcaption {
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;/html&gt;
+
+
 
 &lt;p&gt;
 
@@ -96,7 +98,11 @@ Ok, now we can talk about more fun stuff! Or at least, stuff we have a bit more 
 
 &lt;h3 class=&quot;subsection-heading&quot;&gt;Greedy Tiling&lt;/h3&gt;
 
-I am basically going to briefly summarize what I think are the important takeaways from &lt;a href=&quot;https://www.researchgate.net/publication/262763983_String_Similarity_via_Greedy_String_Tiling_and_Running_Karp-Rabin_Matching&quot;&gt;this paper&lt;/a&gt; by Wise. It's going to be &lt;em&gt;brief&lt;/em&gt;, and I mean it this time. The setup is that we have some source document, and some query document, and we want to find exact matches between them efficiently.
+&lt;p&gt;
+  I am basically going to briefly summarize what I think are the important takeaways from &lt;a href=&quot;https://www.researchgate.net/publication/262763983_String_Similarity_via_Greedy_String_Tiling_and_Running_Karp-Rabin_Matching&quot;&gt;this paper&lt;/a&gt; by Wise. It's going to be &lt;em&gt;brief&lt;/em&gt;, and I mean it this time. The setup is that we have some source document, and some query document, and we want to find exact matches between them efficiently.
+&lt;/p&gt;
+
+
 
 &lt;p&gt;
   The idea is &lt;em&gt;super&lt;/em&gt; simple: just take the longest exact match first, &quot;tile&quot; it (meaning mark it so that no matches touch that area in the source or query document again), and repeat until there are no more matches of at least the minimum match length $t$. That's it. Some notes:
@@ -112,7 +118,11 @@ I am basically going to briefly summarize what I think are the important takeawa
 
 &lt;h3 class=&quot;subsection-heading&quot;&gt;Smith-Waterman&lt;/h3&gt;
 
-This is probably my favorite algorithm of the bunch. Here's a &lt;a href=&quot;https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm&quot;&gt;wikipedia article&lt;/a&gt; on it, if you're into that sort of thing, but I will do my best that you don't need to reference it. The &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/0022283681900875&quot;&gt;original paper&lt;/a&gt; is also all of 1.5 pages long, a real banger if you ask me.
+&lt;p&gt;
+  This is probably my favorite algorithm of the bunch. Here's a &lt;a href=&quot;https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm&quot;&gt;wikipedia article&lt;/a&gt; on it, if you're into that sort of thing, but I will do my best that you don't need to reference it. The &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/0022283681900875&quot;&gt;original paper&lt;/a&gt; is also all of 1.5 pages long, a real banger if you ask me.
+&lt;/p&gt;
+
+
 
 &lt;p&gt;
   My one line description of this algorithm would be &quot;The classic edit distance dynamic programming algorithm but with user-defined scoring&quot;. Since we're talking dynamic programming, we fill in an $m+1 \times n+1$ matrix $H$ of scores, where $m$ is the length of the query, and $n$ is the length of the source. We reward matching words, and penalize mismatching words and whenever we have to introduce a &quot;gap&quot;, meaning skip over a word in the query or source document.
@@ -176,7 +186,8 @@ If you don't get this reference then you are either much older than me or much y
     &lt;img src=&quot;../../../../img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;In the above, Greedy Tiling finds the exact match &quot;one of the 52 &quot;Best Loved Books of the Twentieth Century&quot;.&quot;, and then expands it using Smith-Waterman to catch a larger portion that has likely been plagiarized, with some obfuscation!&lt;/figcaption&gt;
   &lt;/figure&gt;
-
+&lt;/p&gt;
+&lt;p&gt;
   Note also that, by design, the Greedy Tiling phase catches proper nouns/names with at least 2-3 words, but if the surrounding context is unrelated in the source and query document then Smith-Waterman will recognize this and discard the match. I think that's pretty nice! Finally, I'll note that this combination of Greedy Tiling and Smith-Waterman was at least partially inspired by the (apparently famous) &lt;a href=&quot;https://en.wikipedia.org/wiki/BLAST_(biotechnology)&quot;&gt;BLAST algorithm&lt;/a&gt;&quot; from bioinformatics, which does something quite similar. 
 
 &lt;/p&gt;

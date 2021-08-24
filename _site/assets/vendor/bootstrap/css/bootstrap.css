@@ -152,10 +152,14 @@ sup {
   top: -.5em;
 }
 
-a {
+a{
   color: #007bff;
   text-decoration: none;
   background-color: transparent;
+}
+
+a:visited {
+  color: purple;
 }
 
 a:hover {
