@@ -300,7 +300,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
 <p>
 
   I promised a detective, now I will deliver. What we are going to do is encode $(V, X)$, meaning we are going to leave clues such that any (mathematically well-versed) detective can recover the pair $(V,X)$. We assume the detective already knows $U$. First of all, how many possible pairs are there? Well, at least $r^k \binom{n-u}{v}$. In fact, exactly that many, and moreover, $X$ and $V$ are uniformly distributed over all the possibilities. By Shannon's arguments, and via Huffman encoding, this means we can encode $(X, V)$ trivially with $log \left ( r^k \binom{n-u}{v} \right )$ bits. But this by itself is not useful to use, and does nothing to relate $\mathbb{E}[|\chi(X, W)|]$ with $\mathbb{E}[|\chi(X, U)|]$, Remarkably, what Rao was able to show is that we can encode $(X, V)$ for our detective using 
-  $$log \left ( r^k \binom{n-u}{v} \right ) + a\cdot \mathbb{E}[|\chi(X, U)|] - b \cot \mathbb{E}[|\chi(X, W)|],$$
+  $$log \left ( r^k \binom{n-u}{v} \right ) + a\cdot \mathbb{E}[|\chi(X, U)|] - b \cdot \mathbb{E}[|\chi(X, W)|],$$
   which by Shannon's theorem is <em>at least </em> $log \left ( r^k \binom{n-u}{v} \right )$. Crucially, we have that $a/b \leq 2/3$, and this immediately implies the result!
 
 </p>
