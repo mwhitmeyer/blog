@@ -1,202 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-09-08T13:31:03-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
-&lt;head&gt;
-&lt;style&gt;
-figure {
-  border: 1px #000000 solid;
-  padding: 4px;
-  margin: auto;
-}
-
-figcaption {
-  background-color: rgb(248, 247, 174);
-  color: rgb(0, 0, 0);
-  font-style: italic;
-  padding: 2px;
-  text-align: center;
-}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;/html&gt;
-
-
-
-&lt;p&gt;
-
-  Hi! It's been awhile. I lost motivation for a while there, and moved to a different state, but I won't keep boring you with all that. Suffice it to say that hopefully I will start posting more regularly now as I head into my PhD! 
-
-&lt;/p&gt;
-
-&lt;p&gt;
-
-  Now, this post will be about what I learned and created this summer during my internship at &lt;a href=&quot;https://www.stottlerhenke.com/&quot;&gt;Stottler Henke&lt;/a&gt; (SHAI). In general, I don't plan on discussing such (gasp) &lt;em&gt;real-world applicable&lt;/em&gt; things as much going forward on this blog, in case anyone was concerned.
-
-&lt;/p&gt;
-
-&lt;h2 class=&quot;section-heading&quot;&gt;Problem Setup&lt;/h2&gt;
-
-
-&lt;p&gt;
-  Now, let's talk about plagiarism. Here's the setup: we have a (very) large corpus (say, Wikipedia) of $N$ &quot;sensitive&quot; or &quot;source&quot; documents, which may or may not have been plagiarized by our query document. When we say plagiarism, we don't necessarily mean the whole document -- it could just be that a key sentence was copied, or a paragraph with crucial information was summarized at some (potentially random) point within the query document. Now, for exact matches, this is a relatively straightforward task, although it takes some clever data structures that I won't discuss in this post to get the runtime to depend only (linearly) on the length $m$ of the query document rather than $N$ (all the source documents we have to search through). This is what had already been accomplished when I arrived for my internship, and my task was to see what might be possible when our job was not just to find exact matches, but also &quot;fuzzy&quot; matches. After all, a smart plagiarizer would try and hide their illicit behavior. But what does &quot;fuzzy&quot; even mean? So glad you asked, and if you have a good definition please send it my way.
-&lt;/p&gt;
-
-&lt;p&gt;
-  Nevertheless, onwards. It seemed as good a starting place as any was the &lt;a href=&quot;https://pan.webis.de/clef14/pan14-web/&quot;&gt;PAN Conference&lt;/a&gt;, a conference whose central theme in 2011-&lt;a href=&quot;http://ceur-ws.org/Vol-1179/CLEF2013wn-PAN-PotthastEt2013.pdf&quot;&gt;&lt;/a&gt;2015&lt;/a&gt; was plagiarism detection! Now, this seemed to be more of a competition and less of a thoroughly peer-reviewed venue, but nonetheless there were some interesting ideas floating around there, in case you want to see other things outside of what I will talk about in this post. In addition, they had a nice (albeit small) dataset and evaluation framework (which were a bit difficult to find but not impossible) that allows for an objective scoring and evaluation of any algorithm one might come up with! Beyond the dataset (and floating ideas), and perhaps most importantly, they also had a very nice framework for plagiarism detection, which I will now describe.
-&lt;/p&gt;
-
-&lt;p&gt;
-  The framework they describe splits plagiarism detection into two main tasks: 
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;b&gt;Source Retrieval:&lt;/b&gt; This refers to the task of (efficiently) narrowing our search down from $N$ (which is just &lt;em&gt;overwhelmingly&lt;/em&gt; large) possible source documents to just $k$ (which we think of as some reasonable constant). We will do a more detailed plagiarism detection analysis on these $k$ documents in the next phase. You can think about source retrieval as a sort of google search where the query document is typed into Google and the source documents as the possible &quot;websites&quot;. Of course, like anyone ever, we only have time to look at the first page (a.k.a. the first $k$ source documents) results that Google spits out. &lt;/li&gt;
-    &lt;li&gt;&lt;b&gt;Text Alignment:&lt;/b&gt; This refers to the task of, well, actually &quot;finding&quot; the instances of plagiarism between the query document and the top $k$ source documents. This is where the fun really begins!&lt;/li&gt;
-  &lt;/ol&gt;
-
-
-  &lt;figure&gt;
-    &lt;img src=&quot;/blog/img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
-    &lt;figcaption&gt;A visualization of the source retrieval and text alignment process described above, from the PAN conference summary papers.&lt;/figcaption&gt;
-  &lt;/figure&gt;
- 
-&lt;br&gt;
-
-  In this post we will discuss some general strategies for source retrieval, but all of them involve some sort of &quot;search engine&quot; such as ElasticSearch or Lucene or maybe Google has an API (I dunno just pick your favorite one), and go a bit more into depth on some ideas I had for the text alignment phase.
-&lt;/p&gt;
-
-&lt;h2 class=&quot;section-heading&quot;&gt;Source Retrieval&lt;/h2&gt;
-&lt;p&gt;
-I think some discussion of the source retrieval step is warranted here, but I will try and keep this section brief and focus more on the algorithms I think are interesting for the text alignment phase. 
-
-&lt;/p&gt;
-
-&lt;p&gt;
-  Basically, we just need to figure out how to input/give our query document to whatever search engine we are using. The search engine I was tasked with using had a finite limit on how many words the query could be, which is part of what makes things slightly tricky about this. Let's talk about some possible solutions:
-
-  &lt;ul&gt;
-    &lt;li&gt;
-      If our document is very long, we can narrow it down to the top $w$ keywords (for your choice of $w$) in a fairly straightforward manner, depending on the search engine you are using or how you are indexing the source documents. Basically, the idea is to get the &lt;a href=&quot;https://en.wikipedia.org/wiki/Tf%E2%80%93idf&quot;&gt;TF-IDF&lt;/a&gt; scores of each word in they query document, and make a new query that's just based on the top $w$ words according to this score. What is TF-IDF? So glad you asked. TF stands for &lt;b&gt;term frequency&lt;/b&gt;, which is just the number of times the term appears in the query document. IDF, which stands for &lt;b&gt;inverse document frequency&lt;/b&gt;, requires data from the indexed source documents, and it is equal to 
-      $$\log \left ( \frac{n+1}{m+1}+1\right) $$
-      where $n =$ number of source documents and $m=$ how many (source) documents the term appears in. If your index (again, Lucene, etc.) gives you quick access to $m$ and $n$ then you are good to go! Note that in this setup, &lt;em&gt;rare&lt;/em&gt; words (w.r.t. the overall corpus) are rewarded much more highly than words (such as &quot;the&quot; or &quot;he&quot;) that appear in almost every document. Also note that this method doesn't take into account the ordering of the words in the query document.
-    &lt;/li&gt;
-    &lt;li&gt;
-      The previous method is fairly fast, and only requires one use of the search engine after you have created your new query. However, imagine that someone has hidden a small plagiarized passage about a violin within a very long article (which hasn't been plagiarized) about football. It is overwhelmingly likely that the violin words are &quot;drowned out&quot; by all the football, and the above method won't work. Now this is a particularly difficult kind of plagiarism to detect, but what good would our tool be if we just gave up on the tough examples? Plus, people usually try to hide their plagiarism. &lt;br&gt; 
-      The next idea is an attempt to address this. It is simple: just split the query document into small enough chunks (of desired length), and treat each as a separate query to your search engine/index. This is much more likely to catch the nefarious example I described above, but has the drawback of being much slower and scaling with the length of the query document. One must also decide how to decide which results to prioritize between the chunks. You could take the ones with the highest overall scores (according to your search engine), but that may ignore some chunks altogether. You could also take the top few results from each chunk, but if your query is very long this could get very expensive later in the text alignment phase (in which we have to do detailed analysis on every document retrieved in this stage).
-    &lt;/li&gt;
-  &lt;/ul&gt;
-
-  There are probably lot's of other ideas to optimize this step, and this step is actually HUGELY important when dealing with a massive corpus. Going back to my violin-inside-football-article example, even if you manage to catch the few sentences about a violin, there are probably thousands upon thousands of Wikipedia articles that deal with violins or even have them as the main topic. Source retrieval can be &lt;b&gt;&lt;em&gt;tough&lt;/em&gt;&lt;/b&gt;. One thing I didn't have time to try but which may be effective is extracting &lt;em&gt;named entities&lt;/em&gt;: for example, the TF-IDF method would try &quot;George&quot;, &quot;Washington&quot;, and &quot;Carver&quot; as unrelated words, but obviously if they appear one after another then we're talking about the badass, ahead-of-his-time &lt;a href=&quot;https://en.wikipedia.org/wiki/George_Washington_Carver&quot;&gt;legend himself&lt;/a&gt;.
-
-  
-&lt;/p&gt;
-
-
-&lt;h2 class=&quot;section-heading&quot;&gt;Text Alignment&lt;/h2&gt;
-
-Ok, now we can talk about more fun stuff! Or at least, stuff we have a bit more control over. A small note: I think it makes a lot of sense to do all matching on a word-by-word basis (rather than character-by-character) if we are looking to detect obfuscated plagiarism. Why I think this will become even more clear when we discuss Smith-Waterman score functions, but this also makes sense because we can then take out punctuations, whitespaces, and &quot;stopwords&quot; (pronouns, prepositions, etc.), and reduce our document to something much simpler.
-
-&lt;h3 class=&quot;subsection-heading&quot;&gt;Greedy Tiling&lt;/h3&gt;
-
-&lt;p&gt;
-  I am basically going to briefly summarize what I think are the important takeaways from &lt;a href=&quot;https://www.researchgate.net/publication/262763983_String_Similarity_via_Greedy_String_Tiling_and_Running_Karp-Rabin_Matching&quot;&gt;this paper&lt;/a&gt; by Wise. It's going to be &lt;em&gt;brief&lt;/em&gt;, and I mean it this time. The setup is that we have some source document, and some query document, and we want to find exact matches between them efficiently.
-&lt;/p&gt;
-
-
-
-&lt;p&gt;
-  The idea is &lt;em&gt;super&lt;/em&gt; simple: just take the longest exact match first, &quot;tile&quot; it (meaning mark it so that no matches touch that area in the source or query document again), and repeat until there are no more matches of at least the minimum match length $t$. That's it. Some notes:
-  &lt;ul&gt;
-    &lt;li&gt;
-      Technically, the worst case runtime of the most basic form of the algorithm is $O(n^3)$, if $n$ is the length of both the query and source documents. Which is bad. However, with some tricks, we can improve the worst case runtime to $O(n^2)$ (still bad), but crucially, the average case runtime (empirically) is $O(n)$ (good!). The rough idea is as follows: create an inverted index of both the query and source document mapping each phrase of length $t$ to the indices it occurs at. I should note that this can be accomplished via a &lt;a href=&quot;https://en.wikipedia.org/wiki/Rolling_hash&quot;&gt;rolling hash function&lt;/a&gt; for a very speedy mapping process, but since I was using Python dictionaries I didn't bother with this. Then you just run through the query phrases, checking if any appear in the source dictionary, and if so expanding them if necessary. I am hiding some details, but this is the gist of it. TLDR: it's pretty much linear time.
-    &lt;/li&gt;
-    &lt;li&gt;
-      This algorithm is not technically optimal. Here, by &quot;optimal&quot;, we mean that it doesn't necessarily &lt;em&gt;maximally tile&lt;/em&gt; the query document. Here is a concrete example: consider $\mathbf{src} = b a a d c a a a a b a a$ and $\mathbf{query} = c a a b a a d $. Greedy tiling will find the match $a a b a a$ rather than the two matches $caa$ and $baad$. So, not technically optimal, but one could argue that we might want to find longer matches over shorter matches anyway. Also, this is a pretty pathological example.
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/p&gt;
-
-&lt;h3 class=&quot;subsection-heading&quot;&gt;Smith-Waterman&lt;/h3&gt;
-
-&lt;p&gt;
-  This is probably my favorite algorithm of the bunch. Here's a &lt;a href=&quot;https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm&quot;&gt;wikipedia article&lt;/a&gt; on it, if you're into that sort of thing, but I will do my best that you don't need to reference it. The &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/0022283681900875&quot;&gt;original paper&lt;/a&gt; is also all of 1.5 pages long, a real banger if you ask me.
-&lt;/p&gt;
-
-
-
-&lt;p&gt;
-  My one line description of this algorithm would be &quot;The classic edit distance dynamic programming algorithm but with user-defined scoring&quot;. Since we're talking dynamic programming, we fill in an $m+1 \times n+1$ matrix $H$ of scores, where $m$ is the length of the query, and $n$ is the length of the source. We reward matching words, and penalize mismatching words and whenever we have to introduce a &quot;gap&quot;, meaning skip over a word in the query or source document.
-  $$H_{i,j} = \max \begin{cases}
-      H_{i-1,j-1} + \mathbf{score}(query\_words[i], source\_words[j]) \\
-      H_{i-1,j} + \mathbf{gap\_penalty} \\
-      H_{i, j-1} + \mathbf{gap\_penalty}.
-    \end{cases}
-  $$
-  We then take matches by finding entries of the matrix above a certain score threshold $\beta$. Note that we do this on a word by word basis, as discussed above. Also note that the runtime is at least $O(mn)$, which is &lt;em&gt;slow&lt;/em&gt;. I admit that when I initially saw this runtime, as a theoretician, I was like oh good it's polynomial! What a fast algorithm, this is perfect. Then I ran it on my laptop and realized why I usually stick to theory.
-&lt;/p&gt;
-
-&lt;p&gt;
-  Next, I claim that this algorithm, like the edit distance algorithm, is optimal! But what does that even mean here? And what are reasonable &lt;b&gt;score&lt;/b&gt; and &lt;b&gt;gap_penalty&lt;/b&gt; functions?? Great questions. The answer to the first question is rather dumb: the algorithm is optimal for whatever score/gap penalty functions you choose, so you could choose some nonsense functions and your algorithm will output nonsense. At least it will be optimal nonsense, I suppose. So let's talk about reasonable scoring and gap penalty functions.
-&lt;/p&gt;
-
-&lt;h4 class=&quot;subsection-heading&quot;&gt;Smith-Waterman Scoring Functions&lt;/h4&gt;
-
-&lt;p&gt;
-  An example of a really simple (and canonical) score function could be as follows: $\mathbf{score}(w_1, w_2) = 1$ if $w_1 = w_2$, otherwise $\mathbf{score}(w_1, w_2) = -p$. Usually $p$ will be in the range of roughly $(0.05, 0.5)$. Taking $p$ too large doesn't allow for hardly any mismatches (aka &quot;fuzziness&quot;), while $p$ being too small will result in very fuzzy matches, to the point where a human would usually conclude that this is not a match. As for the gap penalty function, I think a good rule of thumb is to penalize gaps and misamtches the same, so $\mathbf{gap\_penalty} = -p$.
-&lt;/p&gt;
-
-&lt;p&gt;
-  Now, I wasn't exactly satisfied with this score function, and so I had what I thought was a really cool idea. My idea was to use a (pretrained) word embedding as a score function to capture semantic similarities! $ \mathbf{score}(w_1, w_2) = $
-  $$ 
-  \begin{cases}
-      -p &amp; \text{ if } \mathsf{cs}(E(w_1), E(w_2)) &lt; \alpha \quad  \text{(mismatch)}\\
-      2\cdot (\mathsf{cs}(E(w_1), E(w_2)) -\alpha) &amp; \text{ if } \mathsf{cs}(E(w_1), E(w_2)) \geq \alpha. \quad \text{(match)}
-  \end{cases}
-  $$
-  where $\mathsf{cs}$ is the &lt;em&gt;cosine similarity&lt;/em&gt;, and $E$ is the pretrained word embedding. For concreteness, just consider $\alpha = 0.5$. What this score function does is it sees for example $w_1 = amazing$ and $w_2 = incredible$, then it may not count it as a mismatch, but rather assign a positive score! Otherwise, if we are below the threshold, then it just applies the same constant penalty. I thought this was cool and would've been surprised if no one had done it before. Turns out, someone &lt;em&gt;has&lt;/em&gt; done it before, but I couldn't find anything from before 2020. Here is what some postdoc did last year: &lt;a href=&quot;https://static1.squarespace.com/static/59e25521b7411c07ef1410fa/t/5d499af08dc10f0001ab7e1d/1565104881203/Furnas_SemanticSmithWaterman.pdf&quot;&gt;link&lt;/a&gt;. It's basically the same thing, but he uses a slightly different score function! Anyway, I was pleased with how this score function seemed to work in practice.
-&lt;/p&gt;
-
-&lt;h3 class=&quot;subsection-heading&quot;&gt;Combining Greediness and Optimality!&lt;/h3&gt;
-
-&lt;figure&gt;
-  &lt;img src=&quot;/blog/img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
-  &lt;figcaption&gt;A better explanation of what we are about to do than I could ever give.&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-If you don't get this reference then you are either much older than me or much younger than me (or we had different childhoods) and either way it's really not that important. 
-&lt;/p&gt;
-
-&lt;p&gt;
-
-  You're still here? Incredible. We are now going to do the (perhaps obvious) thing and simply combine Greedy Tiling and Smith-Waterman! In more detail, for each of the $k$ documents retrieved during source retrieval we do the following:
-
-  &lt;ol&gt;
-  
-    &lt;li&gt;
-      Find all the exact matches of length at least $s$ words (I usually pick $s$ to be quite low, say 2 or 3) between the source document and the query document with Greedy Tiling.
-    &lt;/li&gt;
-    &lt;li&gt;
-      For each exact match found in the previous step, look at the $\ell$ words (I think $\ell = 50$ is a reasonable number to start off with, but it depends on the application) preceding and coming after the match in both the query and the source document, and run the Smith-Waterman on these $s + 2\ell$ words, considering only the top match in this range. If the score of the match according to Smith-Waterman is higher than some threshold $\beta$, then keep the match, otherwise discard it.
-    &lt;/li&gt;
-  &lt;/ol&gt;
-
-  And that's it! If you want to get really fancy you could make $\ell$ not fixed but rather dynamic, increasing as needed. Below is a nice example of how the overall algorithm works:
-
-  &lt;figure&gt;
-    &lt;img src=&quot;/blog/img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
-    &lt;figcaption&gt;In the above, Greedy Tiling finds the exact match &quot;one of the 52 &quot;Best Loved Books of the Twentieth Century&quot;.&quot;, and then expands it using Smith-Waterman to catch a larger portion that has likely been plagiarized, with some obfuscation!&lt;/figcaption&gt;
-  &lt;/figure&gt;
-&lt;/p&gt;
-&lt;p&gt;
-  Note also that, by design, the Greedy Tiling phase catches proper nouns/names with at least 2-3 words, but if the surrounding context is unrelated in the source and query document then Smith-Waterman will recognize this and discard the match. I think that's pretty nice! Finally, I'll note that this combination of Greedy Tiling and Smith-Waterman was at least partially inspired by the (apparently famous) &lt;a href=&quot;https://en.wikipedia.org/wiki/BLAST_(biotechnology)&quot;&gt;BLAST algorithm&lt;/a&gt;&quot; from bioinformatics, which does something quite similar. 
-
-&lt;/p&gt;
-
-
-&lt;p&gt;
-  Finally, I'll note that this is just one way I thought was nice, efficient, and seemed to work well. There are doubtless many other text alignment texhniques you could go for, and a rather simple solution if you have a good exact match finder is to replace each word with a set of synonyms (and count two words as matching if they are in the same synonym set). One could also try and use some neural network approach that &quot;understands&quot; semantic similarities between two passages, but I have the feeling this would have a significantly slower runtime.
-&lt;/p&gt;
-
-&lt;p&gt;
-  Now back to theory!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-09-08T17:32:52-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -490,7 +292,205 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
     &lt;/p&gt;
     &lt;p&gt;
       The last thing I will mention is that a super simple modification to the above proof idea was able to give an optimal upper bound of $r = \alpha p \log(k)$ for some constant $\alpha$. Namely, the idea is simple to partition into $2p$ buckets instead of $p$ buckets, and show that with probability $&gt;0$ at least half completely contain a set in the family. Surprisingly, this gets rid of the $\log(p)$ factor! See &lt;a href=&quot;https://arxiv.org/pdf/2009.09327.pdf&quot;&gt;here&lt;/a&gt; for the details, although that's pretty much the entire idea.
-    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="https://mwhitmeyer.github.io/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>https://mwhitmeyer.github.io/blog/parrep</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
+    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+figure {
+  border: 1px #000000 solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  background-color: rgb(248, 247, 174);
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;/html&gt;
+
+
+
+&lt;p&gt;
+
+  Hi! It's been awhile. I lost motivation for a while there, and moved to a different state, but I won't keep boring you with all that. Suffice it to say that hopefully I will start posting more regularly now as I head into my PhD! 
+
+&lt;/p&gt;
+
+&lt;p&gt;
+
+  Now, this post will be about what I learned and created this summer during my internship at &lt;a href=&quot;https://www.stottlerhenke.com/&quot;&gt;Stottler Henke&lt;/a&gt; (SHAI). In general, I don't plan on discussing such (gasp) &lt;em&gt;real-world applicable&lt;/em&gt; things as much going forward on this blog, in case anyone was concerned.
+
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Problem Setup&lt;/h2&gt;
+
+
+&lt;p&gt;
+  Now, let's talk about plagiarism. Here's the setup: we have a (very) large corpus (say, Wikipedia) of $N$ &quot;sensitive&quot; or &quot;source&quot; documents, which may or may not have been plagiarized by our query document. When we say plagiarism, we don't necessarily mean the whole document -- it could just be that a key sentence was copied, or a paragraph with crucial information was summarized at some (potentially random) point within the query document. Now, for exact matches, this is a relatively straightforward task, although it takes some clever data structures that I won't discuss in this post to get the runtime to depend only (linearly) on the length $m$ of the query document rather than $N$ (all the source documents we have to search through). This is what had already been accomplished when I arrived for my internship, and my task was to see what might be possible when our job was not just to find exact matches, but also &quot;fuzzy&quot; matches. After all, a smart plagiarizer would try and hide their illicit behavior. But what does &quot;fuzzy&quot; even mean? So glad you asked, and if you have a good definition please send it my way.
+&lt;/p&gt;
+
+&lt;p&gt;
+  Nevertheless, onwards. It seemed as good a starting place as any was the &lt;a href=&quot;https://pan.webis.de/clef14/pan14-web/&quot;&gt;PAN Conference&lt;/a&gt;, a conference whose central theme in 2011-&lt;a href=&quot;http://ceur-ws.org/Vol-1179/CLEF2013wn-PAN-PotthastEt2013.pdf&quot;&gt;&lt;/a&gt;2015&lt;/a&gt; was plagiarism detection! Now, this seemed to be more of a competition and less of a thoroughly peer-reviewed venue, but nonetheless there were some interesting ideas floating around there, in case you want to see other things outside of what I will talk about in this post. In addition, they had a nice (albeit small) dataset and evaluation framework (which were a bit difficult to find but not impossible) that allows for an objective scoring and evaluation of any algorithm one might come up with! Beyond the dataset (and floating ideas), and perhaps most importantly, they also had a very nice framework for plagiarism detection, which I will now describe.
+&lt;/p&gt;
+
+&lt;p&gt;
+  The framework they describe splits plagiarism detection into two main tasks: 
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;b&gt;Source Retrieval:&lt;/b&gt; This refers to the task of (efficiently) narrowing our search down from $N$ (which is just &lt;em&gt;overwhelmingly&lt;/em&gt; large) possible source documents to just $k$ (which we think of as some reasonable constant). We will do a more detailed plagiarism detection analysis on these $k$ documents in the next phase. You can think about source retrieval as a sort of google search where the query document is typed into Google and the source documents as the possible &quot;websites&quot;. Of course, like anyone ever, we only have time to look at the first page (a.k.a. the first $k$ source documents) results that Google spits out. &lt;/li&gt;
+    &lt;li&gt;&lt;b&gt;Text Alignment:&lt;/b&gt; This refers to the task of, well, actually &quot;finding&quot; the instances of plagiarism between the query document and the top $k$ source documents. This is where the fun really begins!&lt;/li&gt;
+  &lt;/ol&gt;
+
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;A visualization of the source retrieval and text alignment process described above, from the PAN conference summary papers.&lt;/figcaption&gt;
+  &lt;/figure&gt;
+ 
+&lt;br&gt;
+
+  In this post we will discuss some general strategies for source retrieval, but all of them involve some sort of &quot;search engine&quot; such as ElasticSearch or Lucene or maybe Google has an API (I dunno just pick your favorite one), and go a bit more into depth on some ideas I had for the text alignment phase.
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Source Retrieval&lt;/h2&gt;
+&lt;p&gt;
+I think some discussion of the source retrieval step is warranted here, but I will try and keep this section brief and focus more on the algorithms I think are interesting for the text alignment phase. 
+
+&lt;/p&gt;
+
+&lt;p&gt;
+  Basically, we just need to figure out how to input/give our query document to whatever search engine we are using. The search engine I was tasked with using had a finite limit on how many words the query could be, which is part of what makes things slightly tricky about this. Let's talk about some possible solutions:
+
+  &lt;ul&gt;
+    &lt;li&gt;
+      If our document is very long, we can narrow it down to the top $w$ keywords (for your choice of $w$) in a fairly straightforward manner, depending on the search engine you are using or how you are indexing the source documents. Basically, the idea is to get the &lt;a href=&quot;https://en.wikipedia.org/wiki/Tf%E2%80%93idf&quot;&gt;TF-IDF&lt;/a&gt; scores of each word in they query document, and make a new query that's just based on the top $w$ words according to this score. What is TF-IDF? So glad you asked. TF stands for &lt;b&gt;term frequency&lt;/b&gt;, which is just the number of times the term appears in the query document. IDF, which stands for &lt;b&gt;inverse document frequency&lt;/b&gt;, requires data from the indexed source documents, and it is equal to 
+      $$\log \left ( \frac{n+1}{m+1}+1\right) $$
+      where $n =$ number of source documents and $m=$ how many (source) documents the term appears in. If your index (again, Lucene, etc.) gives you quick access to $m$ and $n$ then you are good to go! Note that in this setup, &lt;em&gt;rare&lt;/em&gt; words (w.r.t. the overall corpus) are rewarded much more highly than words (such as &quot;the&quot; or &quot;he&quot;) that appear in almost every document. Also note that this method doesn't take into account the ordering of the words in the query document.
+    &lt;/li&gt;
+    &lt;li&gt;
+      The previous method is fairly fast, and only requires one use of the search engine after you have created your new query. However, imagine that someone has hidden a small plagiarized passage about a violin within a very long article (which hasn't been plagiarized) about football. It is overwhelmingly likely that the violin words are &quot;drowned out&quot; by all the football, and the above method won't work. Now this is a particularly difficult kind of plagiarism to detect, but what good would our tool be if we just gave up on the tough examples? Plus, people usually try to hide their plagiarism. &lt;br&gt; 
+      The next idea is an attempt to address this. It is simple: just split the query document into small enough chunks (of desired length), and treat each as a separate query to your search engine/index. This is much more likely to catch the nefarious example I described above, but has the drawback of being much slower and scaling with the length of the query document. One must also decide how to decide which results to prioritize between the chunks. You could take the ones with the highest overall scores (according to your search engine), but that may ignore some chunks altogether. You could also take the top few results from each chunk, but if your query is very long this could get very expensive later in the text alignment phase (in which we have to do detailed analysis on every document retrieved in this stage).
+    &lt;/li&gt;
+  &lt;/ul&gt;
+
+  There are probably lot's of other ideas to optimize this step, and this step is actually HUGELY important when dealing with a massive corpus. Going back to my violin-inside-football-article example, even if you manage to catch the few sentences about a violin, there are probably thousands upon thousands of Wikipedia articles that deal with violins or even have them as the main topic. Source retrieval can be &lt;b&gt;&lt;em&gt;tough&lt;/em&gt;&lt;/b&gt;. One thing I didn't have time to try but which may be effective is extracting &lt;em&gt;named entities&lt;/em&gt;: for example, the TF-IDF method would try &quot;George&quot;, &quot;Washington&quot;, and &quot;Carver&quot; as unrelated words, but obviously if they appear one after another then we're talking about the badass, ahead-of-his-time &lt;a href=&quot;https://en.wikipedia.org/wiki/George_Washington_Carver&quot;&gt;legend himself&lt;/a&gt;.
+
+  
+&lt;/p&gt;
+
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Text Alignment&lt;/h2&gt;
+
+Ok, now we can talk about more fun stuff! Or at least, stuff we have a bit more control over. A small note: I think it makes a lot of sense to do all matching on a word-by-word basis (rather than character-by-character) if we are looking to detect obfuscated plagiarism. Why I think this will become even more clear when we discuss Smith-Waterman score functions, but this also makes sense because we can then take out punctuations, whitespaces, and &quot;stopwords&quot; (pronouns, prepositions, etc.), and reduce our document to something much simpler.
+
+&lt;h3 class=&quot;subsection-heading&quot;&gt;Greedy Tiling&lt;/h3&gt;
+
+&lt;p&gt;
+  I am basically going to briefly summarize what I think are the important takeaways from &lt;a href=&quot;https://www.researchgate.net/publication/262763983_String_Similarity_via_Greedy_String_Tiling_and_Running_Karp-Rabin_Matching&quot;&gt;this paper&lt;/a&gt; by Wise. It's going to be &lt;em&gt;brief&lt;/em&gt;, and I mean it this time. The setup is that we have some source document, and some query document, and we want to find exact matches between them efficiently.
+&lt;/p&gt;
+
+
+
+&lt;p&gt;
+  The idea is &lt;em&gt;super&lt;/em&gt; simple: just take the longest exact match first, &quot;tile&quot; it (meaning mark it so that no matches touch that area in the source or query document again), and repeat until there are no more matches of at least the minimum match length $t$. That's it. Some notes:
+  &lt;ul&gt;
+    &lt;li&gt;
+      Technically, the worst case runtime of the most basic form of the algorithm is $O(n^3)$, if $n$ is the length of both the query and source documents. Which is bad. However, with some tricks, we can improve the worst case runtime to $O(n^2)$ (still bad), but crucially, the average case runtime (empirically) is $O(n)$ (good!). The rough idea is as follows: create an inverted index of both the query and source document mapping each phrase of length $t$ to the indices it occurs at. I should note that this can be accomplished via a &lt;a href=&quot;https://en.wikipedia.org/wiki/Rolling_hash&quot;&gt;rolling hash function&lt;/a&gt; for a very speedy mapping process, but since I was using Python dictionaries I didn't bother with this. Then you just run through the query phrases, checking if any appear in the source dictionary, and if so expanding them if necessary. I am hiding some details, but this is the gist of it. TLDR: it's pretty much linear time.
+    &lt;/li&gt;
+    &lt;li&gt;
+      This algorithm is not technically optimal. Here, by &quot;optimal&quot;, we mean that it doesn't necessarily &lt;em&gt;maximally tile&lt;/em&gt; the query document. Here is a concrete example: consider $\mathbf{src} = b a a d c a a a a b a a$ and $\mathbf{query} = c a a b a a d $. Greedy tiling will find the match $a a b a a$ rather than the two matches $caa$ and $baad$. So, not technically optimal, but one could argue that we might want to find longer matches over shorter matches anyway. Also, this is a pretty pathological example.
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/p&gt;
+
+&lt;h3 class=&quot;subsection-heading&quot;&gt;Smith-Waterman&lt;/h3&gt;
+
+&lt;p&gt;
+  This is probably my favorite algorithm of the bunch. Here's a &lt;a href=&quot;https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm&quot;&gt;wikipedia article&lt;/a&gt; on it, if you're into that sort of thing, but I will do my best that you don't need to reference it. The &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/0022283681900875&quot;&gt;original paper&lt;/a&gt; is also all of 1.5 pages long, a real banger if you ask me.
+&lt;/p&gt;
+
+
+
+&lt;p&gt;
+  My one line description of this algorithm would be &quot;The classic edit distance dynamic programming algorithm but with user-defined scoring&quot;. Since we're talking dynamic programming, we fill in an $m+1 \times n+1$ matrix $H$ of scores, where $m$ is the length of the query, and $n$ is the length of the source. We reward matching words, and penalize mismatching words and whenever we have to introduce a &quot;gap&quot;, meaning skip over a word in the query or source document.
+  $$H_{i,j} = \max \begin{cases}
+      H_{i-1,j-1} + \mathbf{score}(query\_words[i], source\_words[j]) \\
+      H_{i-1,j} + \mathbf{gap\_penalty} \\
+      H_{i, j-1} + \mathbf{gap\_penalty}.
+    \end{cases}
+  $$
+  We then take matches by finding entries of the matrix above a certain score threshold $\beta$. Note that we do this on a word by word basis, as discussed above. Also note that the runtime is at least $O(mn)$, which is &lt;em&gt;slow&lt;/em&gt;. I admit that when I initially saw this runtime, as a theoretician, I was like oh good it's polynomial! What a fast algorithm, this is perfect. Then I ran it on my laptop and realized why I usually stick to theory.
+&lt;/p&gt;
+
+&lt;p&gt;
+  Next, I claim that this algorithm, like the edit distance algorithm, is optimal! But what does that even mean here? And what are reasonable &lt;b&gt;score&lt;/b&gt; and &lt;b&gt;gap_penalty&lt;/b&gt; functions?? Great questions. The answer to the first question is rather dumb: the algorithm is optimal for whatever score/gap penalty functions you choose, so you could choose some nonsense functions and your algorithm will output nonsense. At least it will be optimal nonsense, I suppose. So let's talk about reasonable scoring and gap penalty functions.
+&lt;/p&gt;
+
+&lt;h4 class=&quot;subsection-heading&quot;&gt;Smith-Waterman Scoring Functions&lt;/h4&gt;
+
+&lt;p&gt;
+  An example of a really simple (and canonical) score function could be as follows: $\mathbf{score}(w_1, w_2) = 1$ if $w_1 = w_2$, otherwise $\mathbf{score}(w_1, w_2) = -p$. Usually $p$ will be in the range of roughly $(0.05, 0.5)$. Taking $p$ too large doesn't allow for hardly any mismatches (aka &quot;fuzziness&quot;), while $p$ being too small will result in very fuzzy matches, to the point where a human would usually conclude that this is not a match. As for the gap penalty function, I think a good rule of thumb is to penalize gaps and misamtches the same, so $\mathbf{gap\_penalty} = -p$.
+&lt;/p&gt;
+
+&lt;p&gt;
+  Now, I wasn't exactly satisfied with this score function, and so I had what I thought was a really cool idea. My idea was to use a (pretrained) word embedding as a score function to capture semantic similarities! $ \mathbf{score}(w_1, w_2) = $
+  $$ 
+  \begin{cases}
+      -p &amp; \text{ if } \mathsf{cs}(E(w_1), E(w_2)) &lt; \alpha \quad  \text{(mismatch)}\\
+      2\cdot (\mathsf{cs}(E(w_1), E(w_2)) -\alpha) &amp; \text{ if } \mathsf{cs}(E(w_1), E(w_2)) \geq \alpha. \quad \text{(match)}
+  \end{cases}
+  $$
+  where $\mathsf{cs}$ is the &lt;em&gt;cosine similarity&lt;/em&gt;, and $E$ is the pretrained word embedding. For concreteness, just consider $\alpha = 0.5$. What this score function does is it sees for example $w_1 = amazing$ and $w_2 = incredible$, then it may not count it as a mismatch, but rather assign a positive score! Otherwise, if we are below the threshold, then it just applies the same constant penalty. I thought this was cool and would've been surprised if no one had done it before. Turns out, someone &lt;em&gt;has&lt;/em&gt; done it before, but I couldn't find anything from before 2020. Here is what some postdoc did last year: &lt;a href=&quot;https://static1.squarespace.com/static/59e25521b7411c07ef1410fa/t/5d499af08dc10f0001ab7e1d/1565104881203/Furnas_SemanticSmithWaterman.pdf&quot;&gt;link&lt;/a&gt;. It's basically the same thing, but he uses a slightly different score function! Anyway, I was pleased with how this score function seemed to work in practice.
+&lt;/p&gt;
+
+&lt;h3 class=&quot;subsection-heading&quot;&gt;Combining Greediness and Optimality!&lt;/h3&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;/blog/img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
+  &lt;figcaption&gt;A better explanation of what we are about to do than I could ever give.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+If you don't get this reference then you are either much older than me or much younger than me (or we had different childhoods) and either way it's really not that important. 
+&lt;/p&gt;
+
+&lt;p&gt;
+
+  You're still here? Incredible. We are now going to do the (perhaps obvious) thing and simply combine Greedy Tiling and Smith-Waterman! In more detail, for each of the $k$ documents retrieved during source retrieval we do the following:
+
+  &lt;ol&gt;
+  
+    &lt;li&gt;
+      Find all the exact matches of length at least $s$ words (I usually pick $s$ to be quite low, say 2 or 3) between the source document and the query document with Greedy Tiling.
+    &lt;/li&gt;
+    &lt;li&gt;
+      For each exact match found in the previous step, look at the $\ell$ words (I think $\ell = 50$ is a reasonable number to start off with, but it depends on the application) preceding and coming after the match in both the query and the source document, and run the Smith-Waterman on these $s + 2\ell$ words, considering only the top match in this range. If the score of the match according to Smith-Waterman is higher than some threshold $\beta$, then keep the match, otherwise discard it.
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  And that's it! If you want to get really fancy you could make $\ell$ not fixed but rather dynamic, increasing as needed. Below is a nice example of how the overall algorithm works:
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;In the above, Greedy Tiling finds the exact match &quot;one of the 52 &quot;Best Loved Books of the Twentieth Century&quot;.&quot;, and then expands it using Smith-Waterman to catch a larger portion that has likely been plagiarized, with some obfuscation!&lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  Note also that, by design, the Greedy Tiling phase catches proper nouns/names with at least 2-3 words, but if the surrounding context is unrelated in the source and query document then Smith-Waterman will recognize this and discard the match. I think that's pretty nice! Finally, I'll note that this combination of Greedy Tiling and Smith-Waterman was at least partially inspired by the (apparently famous) &lt;a href=&quot;https://en.wikipedia.org/wiki/BLAST_(biotechnology)&quot;&gt;BLAST algorithm&lt;/a&gt;&quot; from bioinformatics, which does something quite similar. 
+
+&lt;/p&gt;
+
+
+&lt;p&gt;
+  Finally, I'll note that this is just one way I thought was nice, efficient, and seemed to work well. There are doubtless many other text alignment texhniques you could go for, and a rather simple solution if you have a good exact match finder is to replace each word with a set of synonyms (and count two words as matching if they are in the same synonym set). One could also try and use some neural network approach that &quot;understands&quot; semantic similarities between two passages, but I have the feeling this would have a significantly slower runtime.
+&lt;/p&gt;
+
+&lt;p&gt;
+  Now back to theory!
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="https://mwhitmeyer.github.io/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>https://mwhitmeyer.github.io/blog/parrep</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
 &lt;p&gt;
 Before I begin, &lt;a href=&quot;https://homes.cs.washington.edu/~jrl/&quot;&gt;James Lee&lt;/a&gt; typed up some wonderful &lt;a href=&quot;https://tcsmath.wordpress.com/2008/09/21/lecture-1-cheating-with-foams/&quot;&gt;notes&lt;/a&gt; on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.
 
