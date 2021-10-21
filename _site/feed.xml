@@ -1,4 +1,95 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-09-08T17:32:52-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-10-21T00:25:49-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">So what are you studying for your PhD?</title><link href="https://mwhitmeyer.github.io/blog/wtf-is-theory" rel="alternate" type="text/html" title="So what are you studying for your PhD?" /><published>2021-10-19T08:45:13-07:00</published><updated>2021-10-19T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/wtf-is-theory</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/wtf-is-theory">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+figure {
+  border: 1px #000000 solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;/html&gt;
+
+&lt;p&gt;
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/confused-wth.gif&quot; alt=&quot;???&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;What do you mean &lt;em&gt;theoretical&lt;/em&gt; computer science?? Computers &lt;em&gt;already exist&lt;/em&gt; you idiot.&lt;/figcaption&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;
+Basically theory is too hard so I am gonna take a break by talking about something even harder: explaining what theory is to someone who never studied computer science. I am pretty sure at this point there's just no good answer to &quot;so what are you doing your PhD in,&quot; but if you are in theory and have figured it out let me know. Actually, I imagine this applies to pretty much every PhD student since we are all just working on some niche problem. 
+
+Luckily for you dear reader, I've already run some experiments and figured some things out. Let's look at some possible ways to answer the question of the hour:
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;b&gt;Tell them you study &quot;computer science&quot; and see how that goes&lt;/b&gt;. Oftentimes, this is off-putting enough by itself to garner no further questions, and the conversation simply moves on. The downside when this happens is that you don't get to shittily explain the P vs. NP problem (or whatever weird algorithm you work on) to some poor relative or friend until they literally beg you to stop. &lt;br&gt; &lt;br&gt;
+
+    Ok, so what happens when you get some brave soul who takes the bait, and asks you what &lt;em&gt;within&lt;/em&gt; computer science you study? This reduces (in constant time) to our upcoming option, as you are forced to admit that you study theoretical computer science. &lt;br&gt;
+  &lt;/li&gt;
+  
+  &lt;li&gt;
+    &lt;b&gt;Tell them you study &quot;theoretical computer science&quot;&lt;/b&gt;. Sometimes (especially in a group setting) this also garners no further questions, and our fellow conversationalist comes out unscathed. &lt;br&gt;&lt;br&gt;
+
+    But sometimes, people inquire further. Some of the time, it's even because they are interested, and not just being polite! These are truly the wild times. Ok, let's dip our toes in the water then. We say something along the lines of, &quot;oh this means I study algorithms, and try to prove that they are correct and take a certain amount of time and resources. Sometimes, I even try and prove that no algorithm can solve a task.&quot;
+
+    &lt;br&gt;&lt;br&gt;
+    How did the water feel? This will obviously depend on the person. Of course, many exit the highway here. Totally reasonable decision. I think that often people don't even know &lt;em&gt;what&lt;/em&gt; to ask, so they just kind of look at you. In that situation, its up to you whether you want to dunk them headfirst into the icy water. An entirely unholy theoretical baptism, if you will. Anyway, when this happens, I usually just either move on or excitedly dive deeper, depending on my mood and how much I feel like they could tolerate it.
+
+    So, whether you decided to push them, or they decided to keep asking questions, we land at the last option. &lt;br&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;b&gt;Tell them actually what you work on.&lt;/b&gt; Ok, or tell them about some of your favorite ideas from the field. Either way, we are getting into the most details we can here without writing some math or some definitions. My personal go tos:
+      &lt;ul&gt;
+        &lt;li&gt; Explain my work on property testing by giving examples like: What if we want to test whether you having a big nose is a function of a lot of your genes, or just a few? And go from there. &lt;/li&gt;
+        &lt;li&gt; Poorly explain the P vs. NP problem. I usually try to take something that I know the person spends a lot of time on. For example, if the person is a piano player, I ask them what they think is easier: trying to figure out whether it is possible to play an extremely complicated piece of music, or verifying that someone else can do it? Or if they are planning a wedding: is it easier to book the White House as a wedding venue, or to verify that someone else was able to do it? If they are still interested, or you have them like trapped in a car until you reach your destination, you can try to even explain satisfiability, but this usually causes quite the confusion, at least when I do it. &lt;/li&gt;
+        &lt;li&gt;Give some other example you like from theory. I like to tell people an example I got from Scott Aaronson's book: if an all powerful alien came to earth, she would be able to convince us (via a back and forth conversation that isn't too long) beyond all reasonable doubt who has a winning strategy in a game of chess or Go. Of course, this is a restatement of the IP = PSPACE result, but it sounds kinda wacky when you put it that way, and usually gets people to ask some questions. There's also just so many incredible algorithms out there, like you could explain how we know how to find a minimum cut in a graph, but max cut is hard. I mean probably you'd wanna do this by like some analogy to a network of highways or something -- I don't know I've never tried this one.&lt;/li&gt;
+      &lt;/ul&gt;
+    
+    
+  &lt;/li&gt;
+&lt;/ol&gt;
+&lt;/p&gt;
+&lt;p&gt;
+
+On a more serious note: I actually really do enjoy getting to the third option. I mean, I should hope so, since I just signed up to work on this stuff for at least the next five years, if not hopefully longer. I guess I am just a bit shy about it for whatever reason; I don't want to overwhelm people. I think I am also slightly jaded of meeting a lot of people or people I haven't seen in a long time, and everyone asks you what you are up to, and then the conversation quickly moves on. But I know that this experience is in no way unique to theoretical computer science: everyone gets asked where they work or what they do, and very rarely do people actually get to genuinely talk about it or explain it to the people that they meet. I think what is unique to theoretical computer science (and other more abstract fields) is that its not immediately obvious why anyone would care, and the concepts are often shrouded by complex or exceedingly precise mathematical language.
+
+&lt;/p&gt;
+
+&lt;p&gt;
+  Anywho, I've put together a very convenient flowchart that sums it up below:
+&lt;/p&gt;
+
+&lt;p&gt;
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/flowchart.png&quot; alt=&quot;a flowchart.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;A flowchart.&lt;/figcaption&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;
+  Finally, I'll end this post by mentioning that I just applied for an NSF graduate research fellowship. That means, I just wrote a whole bunch of words trying to explain what I work on, why it's important, why everyone should care about it, and how it connects to the real world. So on that note, here's a quote I found online when I google image searched &quot;theoretical computer science&quot; to try and find the background for the title of this post.
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/quote.jpeg&quot; alt=&quot;boooooo applications&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;Where is the lie?&lt;/figcaption&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Some Background&lt;/h2&gt;</content><author><name>Michael Whitmeyer</name></author><category term="theory" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -292,7 +383,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
     &lt;/p&gt;
     &lt;p&gt;
       The last thing I will mention is that a super simple modification to the above proof idea was able to give an optimal upper bound of $r = \alpha p \log(k)$ for some constant $\alpha$. Namely, the idea is simple to partition into $2p$ buckets instead of $p$ buckets, and show that with probability $&gt;0$ at least half completely contain a set in the family. Surprisingly, this gets rid of the $\log(p)$ factor! See &lt;a href=&quot;https://arxiv.org/pdf/2009.09327.pdf&quot;&gt;here&lt;/a&gt; for the details, although that's pretty much the entire idea.
-    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
+    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="sunflowers" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
