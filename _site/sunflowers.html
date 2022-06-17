@@ -133,7 +133,7 @@ The sunflower problem itself is super simple and natural to state, so the backgr
 </div>
 
 <figure>
-  <img src="/blog/img/posts/sunflowers/examples.png" alt="Sunflower Examples." style="width:100%">
+  <img src="/blog//img/posts/sunflowers/examples.png" alt="Sunflower Examples." style="width:100%">
   <figcaption>Two examples of 3-sunflowers. Note that you can see why they are called sunflowers perhaps from the left example, but totally disjoint sets also count as sunflowers!</figcaption>
 </figure>
 
@@ -196,7 +196,7 @@ Now, that's a bit difficult, so consider just trying to bound $\Pr[|W \setminus 
     Encode $S_j \cap S_i$ for the $S_j \subseteq W\cup S_i$ that <em>minimizes $W \setminus S_j$</em>. 
 
     <figure>
-      <img src="/blog/img/posts/sunflowers/SiSj.png" alt="Si and Sj." style="width:100%">
+      <img src="/blog//img/posts/sunflowers/SiSj.png" alt="Si and Sj." style="width:100%">
       <figcaption>Note that $S_j$ is determined by $W$ and $S_i$.</figcaption>
     </figure>
     Now this is just some subset of $S_i$, so there are (again naively) $2^k$ possibilities here.
@@ -342,7 +342,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
       <b>Clue 3:</b> Let $j$ be such that $\chi(j,U)\subseteq\chi(X,U) \cup W$ and $|\chi(j,U)|$ is minimized. A simple observation is that $j$ could be $X$, so $|\chi(j,U)| \leq |\chi(X,U)|$. We encode $\chi(j,U) \cap \chi(X,U) =: T$. Trivially this can be encoded with $|\chi(X,U)|$ bits.
 
       <figure>
-        <img src="/blog/img/posts/sunflowers/clue3.png" alt="Visualizing clue 3." style="width:100%">
+        <img src="/blog//img/posts/sunflowers/clue3.png" alt="Visualizing clue 3." style="width:100%">
         <figcaption>Visualization of what we are encoding in this step.</figcaption>
       </figure>
     </li>
@@ -362,7 +362,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
 
       As before, we let the detective know we are in case two by making the first bit 1. Now, we are in case 2, which roughly means that there is some $A$ of size $|\chi(X,W)|$ such that $V$ contains a LOT of other $\chi(y,U)$'s (each of which also contains $A$). This is visualized in the below picture.
       <figure>
-        <img src="/blog/img/posts/sunflowers/case2.png" alt="What's happening in case 2" style="width:100%">
+        <img src="/blog//img/posts/sunflowers/case2.png" alt="What's happening in case 2" style="width:100%">
         <figcaption>What must happen if we are in case 2.</figcaption>
       </figure>
 
