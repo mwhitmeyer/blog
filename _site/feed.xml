@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T14:20:45-07:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Sum-Product Theorems for the Reals (and Crossing Numbers)</title><link href="http://localhost:4000/blog/sum-product" rel="alternate" type="text/html" title="Sum-Product Theorems for the Reals (and Crossing Numbers)" /><published>2022-06-14T10:45:13-07:00</published><updated>2022-06-14T10:45:13-07:00</updated><id>http://localhost:4000/blog/sum-product</id><content type="html" xml:base="http://localhost:4000/blog/sum-product">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T14:37:43-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Sum-Product Theorems for the Reals (and Crossing Numbers)</title><link href="https://mwhitmeyer.github.io/blog/sum-product" rel="alternate" type="text/html" title="Sum-Product Theorems for the Reals (and Crossing Numbers)" /><published>2022-06-14T10:45:13-07:00</published><updated>2022-06-14T10:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sum-product</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sum-product">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -157,83 +157,7 @@ Armed with this theorem, we can now prove Ekeles' result.
   For each $a_i, a_j \in A$, define $f_{ij}(x) = a_i(x - a_j)$. The key observation is that this function (which is notably linear), maps at least $n$ points from $A+A$ to $A\cdot A$. Indeed, plugging in $a_j + a_k$ for any $a_k$ results in $a_i\cdot a_k$. Let $P = (A + A)\times (A\cdot A)$ be our set of points, and note that $n \leq \sqrt{|P|}$. Note also that the number of lines with at least $n$ points is at least the number of functions we have defined, which is $n^2$. Then we can apply the above corollary to obtain that 
   $$\ell = n^2 \lesssim \frac{|P|^2}{n^3}.$$
   Rearranging gives $|P|^2 \geq n^5$, which implies that $T_A \geq n^{5/4}$, as desired!
-&lt;/div&gt;</content><author><name>Michael Whitmeyer</name></author><category term="combinatorics" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Fourier Analysis on Subspaces</title><link href="http://localhost:4000/blog/fourier-on-subspaces" rel="alternate" type="text/html" title="Fourier Analysis on Subspaces" /><published>2022-05-14T20:45:13-07:00</published><updated>2022-05-14T20:45:13-07:00</updated><id>http://localhost:4000/blog/fourier-on-subspaces</id><content type="html" xml:base="http://localhost:4000/blog/fourier-on-subspaces">&lt;html&gt;
-&lt;head&gt;
-&lt;style&gt;
-figure {
-  border: 1px #000000 solid;
-  padding: 4px;
-  margin: auto;
-}
-
-figcaption {
-  background-color: rgb(248, 247, 174);
-  color: rgb(0, 0, 0);
-  font-style: italic;
-  padding: 2px;
-  text-align: center;
-}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;/html&gt;
-
-
-
-&lt;p&gt;
-
-  First of all, I will stop with any sort of claim that I will post regularly. I will post when I feel like it. I have Covid&lt;sup&gt;&amp;copy;&lt;/sup&gt; now, so suffice it to say that I feel like it (in that I physically cannot do the things that normally keep me somewhat sane). 
-
-&lt;/p&gt;
-&lt;h2 class=&quot;section-heading&quot;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;
-  Today, we are back with some more technical musings. Specifically, I want to talk about Fourier analysis. More specifically, I want to talk about Fourier analysis on $\mathbb F_2^n$. More specifically, I actually want to talk about Fourier analysis on some subspace $\mathcal V \subseteq \mathbb F_2^n$. That's a lot of specifics. 
-&lt;/p&gt;
-
-&lt;h3&gt;Finite Fourier Analysis&lt;/h3&gt;
-
-&lt;p&gt;
-  First of all, if you haven't watched 3blue1brown's &lt;a href=&quot;https://www.youtube.com/watch?v=spUNpyF58BY&quot;&gt;video&lt;/a&gt; on the (continuous) Fourier transform, it's a really beautiful one. I, as an enormous nerd, have admittedly watched it more than once. As always, he does a wonderful job of explaining the intuition behind Fourier transforms. His video deals with Fourier analysis for functions over the reals, hence the continuity (and this is likely the type of Fourier transform you encountered during your undergrad). However, Fourier analysis works just as well for functions of the form $f: G \to \mathbb R$, where $G$ is a finite group. We call a function $\chi : G \to \mathbb C$ a &lt;i&gt;character&lt;/i&gt; of $G$ if it is a homomorphism: $\chi(a + b) = \chi(a)\chi(b)$ and $\chi(-a) = \frac{1}{\chi(a)}$. These characters form a group under multiplication which we call $\hat G$. It turns out that for finite $G$, we have $|G| = |\hat G|$. Since $G$ is finite, it must also be that $\chi$ maps $g$ to a $p^{th}$ root of unity, where $p$ is the order of $g \in G$. This is all just a mere scratch on the surface of some really beautiful stuff, and I encourage you to check out these well-written &lt;a href=&quot;https://sites.math.rutgers.edu/~sk1233/courses/finitefields-F13/fourier.pdf&quot;&gt;notes&lt;/a&gt; by Swastik Kopparty for more details and cool stuff about Fourier analysis on finite groups.
-&lt;/p&gt;
-
-&lt;p&gt;
-  If that was all a lot of abstract nonsense, don't worry, we will work with the example $G = \mathbb F_2^n$ now.  Note that the order of everything in this group is 2, so the characters we are looking for must map $G$ to $\pm 1$. It turns out that we can choose 
-  $$\chi_a(x) = (-1)^{\langle x, a\rangle}$$
-  as a set of $2^n$ characters. 
-  
-  These characters for $\mathbb F_2^n$ form an alternate basis for the vector space of functions $f : \mathbb F_2^n \to \mathbb R$, which we endow with the inner product $\langle f, g \rangle  = \mathbb E [f(x)\cdot g(x)]$, where $x$ is uniform over $\mathbb F_2^n$. Thus, a quick calculation shows that
-  \[\mathbb E_{x \sim \mathbb F_2^n} [\chi_a(x) \cdot \chi_b(x)] = \begin{cases} 
-  1 &amp; \text { if } a = b \\
-  0 &amp; \text{ otherwise.}
-  \end{cases}\]
-   Therefore, the characters we have defined form an &lt;i&gt;orthonormal&lt;/i&gt; alternate basis, and we can write every function $f : \mathbb F_2^n \to \mathbb R$ as 
-  $$f(x) = \sum_{\gamma \in \mathbb F_2^n} \hat f(\gamma)\chi_\gamma(x),$$
-
-  which we call the Fourier decomposition.
-  
-  
-
-  
-
-&lt;/p&gt;
-
-&lt;p&gt;
-  
-  There has been a literal (and awesome) &lt;i&gt;&lt;a href=&quot;https://arxiv.org/abs/2105.10386&quot;&gt;textbook&lt;/a&gt;&lt;/i&gt; written about &lt;i&gt;just this example when $G = \mathbb F_2^n$&lt;/i&gt;, so if you thought the previous paragraph was cool and/or too brief, I encourage you to check that out.
-&lt;/p&gt;
-
-&lt;h2 class=&quot;section-heading&quot;&gt;Regular Restrictions&lt;/h2&gt;
-
-&lt;p&gt;
-  Theoretical computer scientists care a lot about Boolean functions (nerds). In particular, we care how complex they are, or how good they are at discerning if a distribution is truly random, etc. One (visual, qualitative) way of deciding how complex a function is would be to look at the Fourier decomposition. If it doesn't have many terms (in other words, it is &quot;sparse&quot;), then we could say it is simple. On the other hand, if it has low degree (meaning $\max \{\gamma : \hat f(\gamma) \neq 0\}$ is small), then we could venture that it is a simple function. 
-&lt;/p&gt;
-
-&lt;p&gt;
-  Here's another notion of simplicity: how many of the input bits do I need to fix in order to guarantee the value of the function?
-&lt;/p&gt;
-
-&lt;p&gt;
-  This question has been asked before, and is known as the &lt;b&gt;certificate complexity&lt;/b&gt; of a function $f$. Actually, the way I have phrased above is not exactly accurate; more accurate would be to ask how many input bits one has to &lt;i&gt;reveal&lt;/i&gt; in the &lt;i&gt;worst case&lt;/i&gt; in order to fix $f$. If the distinction is not clear, consider the function $f = AND_n$. In the best case, we only need reveal a single 0. But, the certificate complexity of $AND_n$ is $n$ because in the worst case, we need to reveal $n$ zeroes to guarantee the function's value. It is well-known by now that the certificate complexity is actually polynomially related to the degree of any Boolean function $f$ (along with several other complexity measures, see)
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="fourier-analysis" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">So what are you studying for your PhD?</title><link href="http://localhost:4000/blog/wtf-is-theory" rel="alternate" type="text/html" title="So what are you studying for your PhD?" /><published>2021-10-19T08:45:13-07:00</published><updated>2021-10-19T08:45:13-07:00</updated><id>http://localhost:4000/blog/wtf-is-theory</id><content type="html" xml:base="http://localhost:4000/blog/wtf-is-theory">&lt;html&gt;
+&lt;/div&gt;</content><author><name>Michael Whitmeyer</name></author><category term="combinatorics" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">So what are you studying for your PhD?</title><link href="https://mwhitmeyer.github.io/blog/wtf-is-theory" rel="alternate" type="text/html" title="So what are you studying for your PhD?" /><published>2021-10-19T08:45:13-07:00</published><updated>2021-10-19T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/wtf-is-theory</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/wtf-is-theory">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -322,7 +246,7 @@ On a more serious note: I actually really do enjoy getting to the third option. 
     &lt;figcaption&gt;Where is the lie?&lt;/figcaption&gt;
   &lt;/figure&gt;
 
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="theory" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="http://localhost:4000/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>http://localhost:4000/blog/sunflowers</id><content type="html" xml:base="http://localhost:4000/blog/sunflowers">&lt;html&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="theory" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -616,7 +540,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
     &lt;/p&gt;
     &lt;p&gt;
       The last thing I will mention is that a super simple modification to the above proof idea was able to give an optimal upper bound of $r = \alpha p \log(k)$ for some constant $\alpha$. Namely, the idea is simple to partition into $2p$ buckets instead of $p$ buckets, and show that with probability $&gt;0$ at least half completely contain a set in the family. Surprisingly, this gets rid of the $\log(p)$ factor! See &lt;a href=&quot;https://arxiv.org/pdf/2009.09327.pdf&quot;&gt;here&lt;/a&gt; for the details, although that's pretty much the entire idea.
-    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="sunflowers" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="http://localhost:4000/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>http://localhost:4000/blog/obfuscated-plagiarism</id><content type="html" xml:base="http://localhost:4000/blog/obfuscated-plagiarism">&lt;html&gt;
+    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="sunflowers" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -814,7 +738,7 @@ If you don't get this reference then you are either much older than me or much y
 
 &lt;p&gt;
   Now back to theory!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="http://localhost:4000/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>http://localhost:4000/blog/parrep</id><content type="html" xml:base="http://localhost:4000/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="https://mwhitmeyer.github.io/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>https://mwhitmeyer.github.io/blog/parrep</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
 &lt;p&gt;
 Before I begin, &lt;a href=&quot;https://homes.cs.washington.edu/~jrl/&quot;&gt;James Lee&lt;/a&gt; typed up some wonderful &lt;a href=&quot;https://tcsmath.wordpress.com/2008/09/21/lecture-1-cheating-with-foams/&quot;&gt;notes&lt;/a&gt; on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.
 
@@ -900,7 +824,7 @@ Ok, now that I've gotten your hopes up about just a couple of the cool reasons p
 
 &lt;p&gt;
   Whew. That's all for this post!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="http://localhost:4000/blog/intro" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>http://localhost:4000/blog/intro</id><content type="html" xml:base="http://localhost:4000/blog/intro">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="https://mwhitmeyer.github.io/blog/intro" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>https://mwhitmeyer.github.io/blog/intro</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/intro">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
 &lt;p&gt;
 On this blog you will find a disorganized mix of theoretical computer science and general musings about literally anything else I find interesting. Hence the name of the blog (which is certainly not as clever as I think it is). A nice diverse potpourri/amalgam/melange of topics is healthy right? Says the guy who finds something he likes and ignores literally everything else. Anyway, this blog is for me, as I venture forth into the vast (and intimidating) depths of both theoretical computer science and life. With any luck, this blog will keep me entertained, learning, and accountable. 
 &lt;/p&gt;
