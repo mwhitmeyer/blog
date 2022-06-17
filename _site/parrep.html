@@ -143,7 +143,7 @@ Ok, now that I've gotten your hopes up about just a couple of the cool reasons p
   First, I need to introduce the notion of an <em>odd-cycle game</em>. The idea is very simple: Alice and Bob have a cycle on $m=2k+1$ vertices, let's call this graph $C_m$, and are trying to convince the verifier that this graph is 2-colorable. Clearly, it is not (and if it were, then this would not be a very interesting game because Alice and Bob would always be able to convince the verifier). To see this, consider the below picture, where it is clear that at least two neighboring vertices must be colored different colors (or Alice and Bob must have different answers about the coloring).
 </p>
 <p>
-  <img src="/blog//img/posts/parrep/oddcycle.png" alt="Odd-Cycle Game" style="width:250px;height:275px;" />
+  <img src="/blog/img/posts/parrep/oddcycle.png" alt="Odd-Cycle Game" style="width:250px;height:275px;" />
 </p>
 <p>
   This is $C_5$, where I have labeled each vertex in $[-k,k]$, following the convention of Raz. I have also identified each edge (of which there are $m$), with its opposite vertex (also Raz's convention). The game works as follows: with probability $1/2$, the verifier will ask Alice and Bob about (the same) random vertex, and expect Alice and Bob to answer with the same color, and with probability $1/2$, the verifier will ask Alice and Bob about two neighboring vertices (so an edge), and will accept their answers if they give different labels for these two vertices. I've given a sample strategy for Alice and Bob above by choosing a coloring of the vertices, and it is not hard to see that when Alice and Bob do this, the value of the game is $1-\frac{1}{2m}$. It turns out that this is the best possible strategy. 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T15:37:26-07:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Crossing Numbers and a Sum-Product Theorem.</title><link href="http://localhost:4000/blog/sum-product" rel="alternate" type="text/html" title="Crossing Numbers and a Sum-Product Theorem." /><published>2022-06-16T08:45:13-07:00</published><updated>2022-06-16T08:45:13-07:00</updated><id>http://localhost:4000/blog/sum-product</id><content type="html" xml:base="http://localhost:4000/blog/sum-product">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T15:47:41-07:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Crossing Numbers and a Sum-Product Theorem.</title><link href="http://localhost:4000/blog/sum-product" rel="alternate" type="text/html" title="Crossing Numbers and a Sum-Product Theorem." /><published>2022-06-16T08:45:13-07:00</published><updated>2022-06-16T08:45:13-07:00</updated><id>http://localhost:4000/blog/sum-product</id><content type="html" xml:base="http://localhost:4000/blog/sum-product">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -61,7 +61,7 @@ I will &lt;b&gt;not&lt;/b&gt; be covering what is essentially the state-of-the-a
   It's a good exercise to show that the above theorem implies that $K_5$, the complete graph on 5 vertices, is not planar.
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/sum-product/k5-not-planar.png&quot; alt=&quot;K5 not planar.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/sum-product/k5-not-planar.png&quot; alt=&quot;K5 not planar.&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;$K_5$ is not planar.&lt;/figcaption&gt;
   &lt;/figure&gt;
 
@@ -138,7 +138,7 @@ The above actually a relatively famous theorem originally due to Szemerédi and 
   We are going to use the crossing number theorem we spent so much time proving in the previous section. So let's define a graph. Let $G$ be the graph that puts an edge between two of the points iff they are both next to each other on a line with at least $k$ points. See below example. 
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/sum-product/plane-to-graph.png&quot; alt=&quot;diagram converting plane with points and lines to graph&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/sum-product/plane-to-graph.png&quot; alt=&quot;diagram converting plane with points and lines to graph&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;An example of converting $n \times n$ grid with lines to a graph. Note that this demonstrates the above corollary is tight, since here $k = \sqrt{n}$ and $\ell \geq \Omega(n^2/k^3)$. Note however in this example the crossing number is zero.&lt;/figcaption&gt;
   &lt;/figure&gt;
 
@@ -180,7 +180,7 @@ figcaption {
 &lt;p&gt;
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/whatistheory/confused-wth.gif&quot; alt=&quot;???&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/confused-wth.gif&quot; alt=&quot;???&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;What do you mean &lt;em&gt;theoretical&lt;/em&gt; computer science?? Computers &lt;em&gt;already exist&lt;/em&gt; you idiot.&lt;/figcaption&gt;
   &lt;/figure&gt;
 
@@ -232,7 +232,7 @@ On a more serious note: I actually really do enjoy getting to the third option. 
 &lt;p&gt;
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/whatistheory/flowchart.png&quot; alt=&quot;a flowchart.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/flowchart.png&quot; alt=&quot;a flowchart.&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;A flowchart.&lt;/figcaption&gt;
   &lt;/figure&gt;
 
@@ -242,7 +242,7 @@ On a more serious note: I actually really do enjoy getting to the third option. 
   Finally, I'll end this post by mentioning that I just applied for an NSF graduate research fellowship. That means, I just wrote a whole bunch of words trying to explain what I work on, why it's important, why everyone should care about it, and how it connects to the real world. So on that note, here's a quote I found online when I google image searched &quot;theoretical computer science&quot; to try and find the background for the title of this post.
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/whatistheory/quote.jpeg&quot; alt=&quot;boooooo applications&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/whatistheory/quote.jpeg&quot; alt=&quot;boooooo applications&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;Where is the lie?&lt;/figcaption&gt;
   &lt;/figure&gt;
 
@@ -285,7 +285,7 @@ The sunflower problem itself is super simple and natural to state, so the backgr
 &lt;/div&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;/blog//img/posts/sunflowers/examples.png&quot; alt=&quot;Sunflower Examples.&quot; style=&quot;width:100%&quot;&gt;
+  &lt;img src=&quot;/blog/img/posts/sunflowers/examples.png&quot; alt=&quot;Sunflower Examples.&quot; style=&quot;width:100%&quot;&gt;
   &lt;figcaption&gt;Two examples of 3-sunflowers. Note that you can see why they are called sunflowers perhaps from the left example, but totally disjoint sets also count as sunflowers!&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -348,7 +348,7 @@ Now, that's a bit difficult, so consider just trying to bound $\Pr[|W \setminus 
     Encode $S_j \cap S_i$ for the $S_j \subseteq W\cup S_i$ that &lt;em&gt;minimizes $W \setminus S_j$&lt;/em&gt;. 
 
     &lt;figure&gt;
-      &lt;img src=&quot;/blog//img/posts/sunflowers/SiSj.png&quot; alt=&quot;Si and Sj.&quot; style=&quot;width:100%&quot;&gt;
+      &lt;img src=&quot;/blog/img/posts/sunflowers/SiSj.png&quot; alt=&quot;Si and Sj.&quot; style=&quot;width:100%&quot;&gt;
       &lt;figcaption&gt;Note that $S_j$ is determined by $W$ and $S_i$.&lt;/figcaption&gt;
     &lt;/figure&gt;
     Now this is just some subset of $S_i$, so there are (again naively) $2^k$ possibilities here.
@@ -494,7 +494,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
       &lt;b&gt;Clue 3:&lt;/b&gt; Let $j$ be such that $\chi(j,U)\subseteq\chi(X,U) \cup W$ and $|\chi(j,U)|$ is minimized. A simple observation is that $j$ could be $X$, so $|\chi(j,U)| \leq |\chi(X,U)|$. We encode $\chi(j,U) \cap \chi(X,U) =: T$. Trivially this can be encoded with $|\chi(X,U)|$ bits.
 
       &lt;figure&gt;
-        &lt;img src=&quot;/blog//img/posts/sunflowers/clue3.png&quot; alt=&quot;Visualizing clue 3.&quot; style=&quot;width:100%&quot;&gt;
+        &lt;img src=&quot;/blog/img/posts/sunflowers/clue3.png&quot; alt=&quot;Visualizing clue 3.&quot; style=&quot;width:100%&quot;&gt;
         &lt;figcaption&gt;Visualization of what we are encoding in this step.&lt;/figcaption&gt;
       &lt;/figure&gt;
     &lt;/li&gt;
@@ -514,7 +514,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
 
       As before, we let the detective know we are in case two by making the first bit 1. Now, we are in case 2, which roughly means that there is some $A$ of size $|\chi(X,W)|$ such that $V$ contains a LOT of other $\chi(y,U)$'s (each of which also contains $A$). This is visualized in the below picture.
       &lt;figure&gt;
-        &lt;img src=&quot;/blog//img/posts/sunflowers/case2.png&quot; alt=&quot;What's happening in case 2&quot; style=&quot;width:100%&quot;&gt;
+        &lt;img src=&quot;/blog/img/posts/sunflowers/case2.png&quot; alt=&quot;What's happening in case 2&quot; style=&quot;width:100%&quot;&gt;
         &lt;figcaption&gt;What must happen if we are in case 2.&lt;/figcaption&gt;
       &lt;/figure&gt;
 
@@ -595,7 +595,7 @@ figcaption {
 
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/src-retrieve-text-align.png&quot; alt=&quot;There's supposed to be a visualization of source retrieval and text alignment here.&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;A visualization of the source retrieval and text alignment process described above, from the PAN conference summary papers.&lt;/figcaption&gt;
   &lt;/figure&gt;
  
@@ -698,7 +698,7 @@ Ok, now we can talk about more fun stuff! Or at least, stuff we have a bit more 
 &lt;h3 class=&quot;subsection-heading&quot;&gt;Combining Greediness and Optimality!&lt;/h3&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;/blog//img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
+  &lt;img src=&quot;/blog/img/posts/plagiarism/pen-apple.gif&quot; alt=&quot;Pen pineapple apple pen.&quot; style=&quot;width:100%&quot;&gt;
   &lt;figcaption&gt;A better explanation of what we are about to do than I could ever give.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -722,7 +722,7 @@ If you don't get this reference then you are either much older than me or much y
   And that's it! If you want to get really fancy you could make $\ell$ not fixed but rather dynamic, increasing as needed. Below is a nice example of how the overall algorithm works:
 
   &lt;figure&gt;
-    &lt;img src=&quot;/blog//img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
+    &lt;img src=&quot;/blog/img/posts/plagiarism/combination.png&quot; alt=&quot;A cherrypicked example&quot; style=&quot;width:100%&quot;&gt;
     &lt;figcaption&gt;In the above, Greedy Tiling finds the exact match &quot;one of the 52 &quot;Best Loved Books of the Twentieth Century&quot;.&quot;, and then expands it using Smith-Waterman to catch a larger portion that has likely been plagiarized, with some obfuscation!&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/p&gt;
@@ -787,7 +787,7 @@ Ok, now that I've gotten your hopes up about just a couple of the cool reasons p
   First, I need to introduce the notion of an &lt;em&gt;odd-cycle game&lt;/em&gt;. The idea is very simple: Alice and Bob have a cycle on $m=2k+1$ vertices, let's call this graph $C_m$, and are trying to convince the verifier that this graph is 2-colorable. Clearly, it is not (and if it were, then this would not be a very interesting game because Alice and Bob would always be able to convince the verifier). To see this, consider the below picture, where it is clear that at least two neighboring vertices must be colored different colors (or Alice and Bob must have different answers about the coloring).
 &lt;/p&gt;
 &lt;p&gt;
-  &lt;img src=&quot;/blog//img/posts/parrep/oddcycle.png&quot; alt=&quot;Odd-Cycle Game&quot; style=&quot;width:250px;height:275px;&quot; /&gt;
+  &lt;img src=&quot;/blog/img/posts/parrep/oddcycle.png&quot; alt=&quot;Odd-Cycle Game&quot; style=&quot;width:250px;height:275px;&quot; /&gt;
 &lt;/p&gt;
 &lt;p&gt;
   This is $C_5$, where I have labeled each vertex in $[-k,k]$, following the convention of Raz. I have also identified each edge (of which there are $m$), with its opposite vertex (also Raz's convention). The game works as follows: with probability $1/2$, the verifier will ask Alice and Bob about (the same) random vertex, and expect Alice and Bob to answer with the same color, and with probability $1/2$, the verifier will ask Alice and Bob about two neighboring vertices (so an edge), and will accept their answers if they give different labels for these two vertices. I've given a sample strategy for Alice and Bob above by choosing a coloring of the vertices, and it is not hard to see that when Alice and Bob do this, the value of the game is $1-\frac{1}{2m}$. It turns out that this is the best possible strategy. 
