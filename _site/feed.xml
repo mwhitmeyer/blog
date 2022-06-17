@@ -1,4 +1,239 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2021-10-21T00:38:12-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">So what are you studying for your PhD?</title><link href="https://mwhitmeyer.github.io/blog/wtf-is-theory" rel="alternate" type="text/html" title="So what are you studying for your PhD?" /><published>2021-10-19T08:45:13-07:00</published><updated>2021-10-19T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/wtf-is-theory</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/wtf-is-theory">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T14:20:45-07:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Sum-Product Theorems for the Reals (and Crossing Numbers)</title><link href="http://localhost:4000/blog/sum-product" rel="alternate" type="text/html" title="Sum-Product Theorems for the Reals (and Crossing Numbers)" /><published>2022-06-14T10:45:13-07:00</published><updated>2022-06-14T10:45:13-07:00</updated><id>http://localhost:4000/blog/sum-product</id><content type="html" xml:base="http://localhost:4000/blog/sum-product">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+figure {
+  border: 1px #000000 solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  background-color: rgb(248, 247, 174);
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;/html&gt;
+
+
+
+&lt;p&gt;
+
+  In this post I am gonna talk about some (sum) super fun stuff, with very slick proofs. Let $A \subseteq \mathbb R_+$ be a set with $n$  elements. Consider the &quot;sum set&quot;
+  $$A + A := \{ a+b \: : \: a, b, \in A\}$$
+  and the &quot;product set&quot;
+  $$A \cdot A := \{ a\cdot b \: : \: a, b, \in A\},$$
+  which is not to be confused with the cartesian product.
+  It is easy to note that both of these, on their own, can be small. For example, if $A = \{1,...,n\}$ (or for that matter any arithmetic progression), then we have that $|A+A| =2n-1$. However, in this case, $|A\cdot A|$ is nearly (but not quite) $n^2$. On the other hand, when $A = \{ 1 ,2 ,4, ..., 2^n\}$ (or any other geometric progression), we have that $|A \cdot A| \leq 2n-1$, but that $A+A$ has nearly $n^2$ elements. Long ago, Erdös asked if this was a general phenomenon, i.e. if it was true that in general, for all $\epsilon &gt; 0$, we have that 
+  $$T_A := \max \{ |A + A|, |A \cdot A|\} \geq n^{2-\epsilon}.$$
+  We haven't quite proved this yet, but we have made some very interesting progress over the years.
+&lt;/p&gt;
+&lt;h2 class=&quot;section-heading&quot;&gt;Agenda&lt;/h2&gt;
+&lt;p&gt;
+In this post I will discuss a beautiful result of Elekes, who showed that $T_A \geq \Omega(n^{5/4})$. In order to give a self contained proof, we have to discuss some other interesting results and consequences related to crossing numbers of graphs, but trust me it will be worth it! &lt;br&gt;&lt;br&gt;
+
+I will &lt;b&gt;not&lt;/b&gt; be covering what is essentially the state-of-the-art which is a lovely proof from &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0001870809001182&quot;&gt;Solymosi&lt;/a&gt; that $T_A \geq \tilde \Omega (n^{4/3})$. There are two reasons for this: 
+&lt;ol&gt;
+  &lt;li&gt;
+    Timothy Gowers &lt;a href=&quot;https://www.youtube.com/watch?v=3vNOSGoWYpk&quot;&gt;already gave a great exposition of this result&lt;/a&gt;, and I don't want to reinvent the wheel here or even attempt to compete with Tim Gowers. 
+  &lt;/li&gt;
+  &lt;li&gt;
+    This post would become prohibitively long (not that Solymosi's proof is long -- it isn't!).
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Crossing Numbers and Consequences&lt;/h2&gt;
+
+&lt;p&gt;
+  Let's completely switch gears for the moment. Given a graph $G$ with $n$ vertices and $m$ edges, we can attempt to draw it in the plane. The crossing number is the minimum number of times we must &quot;cross&quot; edges in order to do so. We say that a graph is &quot;planar&quot; if its crossing number is zero! (One of) Euler's Theorem(s) gives a famous way of relating the number of edges, faces, and vertices if the graph is planar:
+
+  &lt;div class=&quot;theorem&quot;&gt;
+    If $G$ is planar, and $f$ is the number of faces in the planar drawing, then we have that 
+    $$n - m  + f=  2.$$ 
+  &lt;/div&gt;
+
+  It's a good exercise to show that the above theorem implies that $K_5$, the complete graph on 5 vertices, is not planar.
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/sum-product/k5-not-planar.png&quot; alt=&quot;K5 not planar.&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;$K_5$ is not planar.&lt;/figcaption&gt;
+  &lt;/figure&gt;
+
+  Here's another fun corollary that shows the power of this theorem.
+  &lt;div class=&quot;corollary&quot;&gt;
+    If $m = 3n-5$, then $G$ is not planar.
+  &lt;/div&gt;
+  &lt;div class=&quot;proof&quot;&gt;
+    Define the degree of a face $d(f)$ as the number of edges that surround it. It is easy to see that $\sum_f d(f) = 2m$. Moreover, we know that each face has to have degree at least 3. So, we have that 
+    $$2m = \sum_f d(f) \geq 3f.$$
+    Plugging this and the fact that $m = 3n -5$ into Euler's formula, we see that 
+    $$n -m + f \leq n - m + \frac{2}{3}m = n - \frac{1}{3}m = n - n + 5/3 &lt; 2,$$
+    which contradicts Euler's theorem.
+  &lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+  Ok, now lets get to some less TCS 101 intro stuff. What can we say in general about larger $m$? For the sake of not letting the length of this post get too out of hand, I'll just get right to it. Here's the lovely theorem.
+
+  &lt;div class=&quot;theorem&quot;&gt;
+    Let $g(n,m)$ be the minimum crossing number of a graph with $n$ vertices and $m$ edges. Then, when $m \geq 4n$, we have that there exists constants $0&lt; c_1,c_2 &lt; 1$ such that  
+    $$c_1 \frac{m^3}{n^2} \leq g(n,m) \leq c_2 \frac{m^3}{n^2}.$$
+  &lt;/div&gt;
+  The upper bound is easier because it is existential -- one must merely show the existence of such a graph. The basic idea is that we can take $\ell$ such that $n\ell \approx 2m$, and let $G$ be a graph with $n/\ell$ disjoint copies of $K_\ell$, each of which has crossing number $\Theta(\ell^4)$. I won't dwell on this here, for details see &lt;a href=&quot;https://www.jstor.org/stable/2319261&quot;&gt;here&lt;/a&gt;. (Side note, if anyone can find a copy of the paper &quot;A minimal problem concerning complete plane graphs&quot; by Blažek and Koman, please send me an email. I spent half an hour with no dice.)
+
+  The lower bound is more interesting, and its proofs can be attributed to &lt;a href=&quot;https://mitpress.mit.edu/books/complexity-issues-vlsi&quot;&gt;Leighton&lt;/a&gt; and &lt;a href=&quot;https://www.sciencedirect.com/science/article/abs/pii/S0304020808734844&quot;&gt;Ajtai, Chvátal, Newborn, and Szemerédi&lt;/a&gt;. The proof I present here is a slightly modified version of the latter.
+  
+  &lt;div class=&quot;proof&quot;&gt;
+    let $cr(G)$ denote the crossing number of $G$. &lt;br&gt;
+    
+    First, we claim that $cr(G) \geq m - 3n + 6$. We can prove this via induction on $m$. If $m \leq 3n-6$ then the bound holds trivially. If $m &gt; 3n-6$ then via the above corollary there must be at least one crossing. Delete one of the edges involved in this crossing, leaving a graph with $m-1$ edges. By the induction hypothesis, this graph has $m - 1 - 3n + 6$ crossings, establishing what we want. &lt;br&gt;&lt;br&gt;
+
+    Ok, now we claim that $cr(G) \geq \frac{1}{125} \frac{m^3}{n^2}$. This time, we shall induct on $n$. Note that, since $m \leq n(n-1)/2$, the first time it is possible for $m \geq 4n$ is when $n =9$, and in this case it must be that $m=36$ (i.e. we have a complete graph). In this case, a calculation shows that $cr(G) \geq m -3n + 6 =15 \geq \frac{36^3}{125\cdot 9^2}$. Alright then, that settles the base case. From now on $n \geq 10$.
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;b&gt;Case 1:&lt;/b&gt; Suppose $4n \leq m \leq 5n$. In this case, we have that 
+        $$\frac{m^3}{125\cdot n^2} \leq n \leq m - 3n + 6 \leq cr(G),$$
+        so we are done.
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;b&gt;Case 2:&lt;/b&gt; Now suppose $m &gt; 5n$. Consider a single crossing $c$, which involves two edges. Now consider removing a vertex $v$ from the graph. The crossing $c$ remains in the subgraph $G-v$ (which is just $G$ without vertex $v$) iff $v$ was not involved in the crossing. Therefore, we can &quot;overcount&quot; each crossing $c$ at most $n-4$ times. Thus,
+        $$cr(G) \geq \frac{1}{n-4}\sum_v cr(G - v).$$
+        We let $m_v$ denote the number of edges in $G-v$. Note then that $\sum_v m_v = (n-2) m$. Via Jensen's inequality, we also have that 
+        $$\sum_v m_v^3 = n \mathbb E [m_v^3] \geq n \mathbb E [m_v]^3 = n (m(n-2)/n)^3.$$
+        With this in mind and the fact that $m_v \geq 4(n-1)$, we can apply the induction hypothesis to $G-v$:
+        \[
+        \begin{align*} 
+          cr(G) &amp;\geq \frac{1}{n-4}\sum_v cr(G - v) \\
+          &amp;\geq \frac{1}{n-4} \frac{1}{125\cdot (n-1)^2}\sum_v m_v^3 \\
+          &amp;\geq \frac{1}{125}\frac{m^3 (n-2)^3}{n^2(n-1)^2 (n-4)}
+        \end{align*}
+        \]
+        To finish the argument, it suffices to note that $(n-2)^3 = n^3 - 6n^2 + 12n -8$ and $(n-1)^2(n-4) = n^3 - 6n^2s + 9n - 4 \leq (n-2)^3$ for all $n \geq 10$.
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;br&gt;
+  This proof, while simpler to parse, is a slightly weaker than what was proved by Ajtai, Chvátal, Newborn, and Szemerédi (they get the constant $1/100$).
+&lt;/p&gt;
+
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Using Crossing number Theorems to Achieve Ekeles' Bound&lt;/h2&gt;
+
+Ok, we are so close to proving Ekeles' bound! Just one more corollary! 
+
+&lt;div class=&quot;corollary&quot;&gt;
+  Suppose we have $n$ points in $\mathbb R^2$, the euclidean plane, and $\ell$ lines that pass through at least $k$ points, where $2 \leq k \leq \sqrt {n}$. Then we have the bound $\ell \leq O(n^2/k^3)$.
+&lt;/div&gt;
+
+The above actually a relatively famous theorem originally due to Szemerédi and Trotter. Note that an upper bound of $O(n^2 /k^2)$ would be simple -- just consider the number of pairs of points each of the $\ell$ lines contains. The simple proof (one could even say from the book) I present next is due to &lt;a href=&quot;https://people.math.sc.edu/laszlo/szt2.pdf&quot;&gt;Székely&lt;/a&gt;.
+
+&lt;div class=&quot;proof&quot;&gt;
+  We are going to use the crossing number theorem we spent so much time proving in the previous section. So let's define a graph. Let $G$ be the graph that puts an edge between two of the points iff they are both next to each other on a line with at least $k$ points. See below example. 
+
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/img/posts/sum-product/plane-to-graph.png&quot; alt=&quot;diagram converting plane with points and lines to graph&quot; style=&quot;width:100%&quot;&gt;
+    &lt;figcaption&gt;An example of converting $n \times n$ grid with lines to a graph. Note that this demonstrates the above corollary is tight, since here $k = \sqrt{n}$ and $\ell \geq \Omega(n^2/k^3)$. Note however in this example the crossing number is zero.&lt;/figcaption&gt;
+  &lt;/figure&gt;
+
+  Note that each of the $\ell$ lines contains at least $k-1$ edges, none of which cross each other. Next, observe that $cr(G) \leq \ell^2$ trivially. Therefore, when $\ell (k-1) \geq 4n$, we can apply our crossing number theorem to obtain 
+  $$\ell^2 \geq cr(G) \geq \frac{(\ell(k-1))^3}{125\cdot n^2}.$$
+  Rearranging gives the bound. 
+  Otherwise, we have that 
+  $$\ell \leq \frac{4n}{k-1} \lesssim \frac{n}{k} = \frac{n^2}{nk} \leq n^2/k^3,$$
+  where we have used the fact that $2 \leq k \leq \sqrt n$.
+&lt;/div&gt;
+
+Armed with this theorem, we can now prove Ekeles' result.
+
+&lt;div class=&quot;proof&quot;&gt; &lt;b&gt;(Proof of Ekeles' bound $T \geq \Omega(n^{5/4})$)&lt;/b&gt; &lt;br&gt;&lt;br&gt;
+
+  For each $a_i, a_j \in A$, define $f_{ij}(x) = a_i(x - a_j)$. The key observation is that this function (which is notably linear), maps at least $n$ points from $A+A$ to $A\cdot A$. Indeed, plugging in $a_j + a_k$ for any $a_k$ results in $a_i\cdot a_k$. Let $P = (A + A)\times (A\cdot A)$ be our set of points, and note that $n \leq \sqrt{|P|}$. Note also that the number of lines with at least $n$ points is at least the number of functions we have defined, which is $n^2$. Then we can apply the above corollary to obtain that 
+  $$\ell = n^2 \lesssim \frac{|P|^2}{n^3}.$$
+  Rearranging gives $|P|^2 \geq n^5$, which implies that $T_A \geq n^{5/4}$, as desired!
+&lt;/div&gt;</content><author><name>Michael Whitmeyer</name></author><category term="combinatorics" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Fourier Analysis on Subspaces</title><link href="http://localhost:4000/blog/fourier-on-subspaces" rel="alternate" type="text/html" title="Fourier Analysis on Subspaces" /><published>2022-05-14T20:45:13-07:00</published><updated>2022-05-14T20:45:13-07:00</updated><id>http://localhost:4000/blog/fourier-on-subspaces</id><content type="html" xml:base="http://localhost:4000/blog/fourier-on-subspaces">&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+figure {
+  border: 1px #000000 solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  background-color: rgb(248, 247, 174);
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;/html&gt;
+
+
+
+&lt;p&gt;
+
+  First of all, I will stop with any sort of claim that I will post regularly. I will post when I feel like it. I have Covid&lt;sup&gt;&amp;copy;&lt;/sup&gt; now, so suffice it to say that I feel like it (in that I physically cannot do the things that normally keep me somewhat sane). 
+
+&lt;/p&gt;
+&lt;h2 class=&quot;section-heading&quot;&gt;Intro&lt;/h2&gt;
+&lt;p&gt;
+  Today, we are back with some more technical musings. Specifically, I want to talk about Fourier analysis. More specifically, I want to talk about Fourier analysis on $\mathbb F_2^n$. More specifically, I actually want to talk about Fourier analysis on some subspace $\mathcal V \subseteq \mathbb F_2^n$. That's a lot of specifics. 
+&lt;/p&gt;
+
+&lt;h3&gt;Finite Fourier Analysis&lt;/h3&gt;
+
+&lt;p&gt;
+  First of all, if you haven't watched 3blue1brown's &lt;a href=&quot;https://www.youtube.com/watch?v=spUNpyF58BY&quot;&gt;video&lt;/a&gt; on the (continuous) Fourier transform, it's a really beautiful one. I, as an enormous nerd, have admittedly watched it more than once. As always, he does a wonderful job of explaining the intuition behind Fourier transforms. His video deals with Fourier analysis for functions over the reals, hence the continuity (and this is likely the type of Fourier transform you encountered during your undergrad). However, Fourier analysis works just as well for functions of the form $f: G \to \mathbb R$, where $G$ is a finite group. We call a function $\chi : G \to \mathbb C$ a &lt;i&gt;character&lt;/i&gt; of $G$ if it is a homomorphism: $\chi(a + b) = \chi(a)\chi(b)$ and $\chi(-a) = \frac{1}{\chi(a)}$. These characters form a group under multiplication which we call $\hat G$. It turns out that for finite $G$, we have $|G| = |\hat G|$. Since $G$ is finite, it must also be that $\chi$ maps $g$ to a $p^{th}$ root of unity, where $p$ is the order of $g \in G$. This is all just a mere scratch on the surface of some really beautiful stuff, and I encourage you to check out these well-written &lt;a href=&quot;https://sites.math.rutgers.edu/~sk1233/courses/finitefields-F13/fourier.pdf&quot;&gt;notes&lt;/a&gt; by Swastik Kopparty for more details and cool stuff about Fourier analysis on finite groups.
+&lt;/p&gt;
+
+&lt;p&gt;
+  If that was all a lot of abstract nonsense, don't worry, we will work with the example $G = \mathbb F_2^n$ now.  Note that the order of everything in this group is 2, so the characters we are looking for must map $G$ to $\pm 1$. It turns out that we can choose 
+  $$\chi_a(x) = (-1)^{\langle x, a\rangle}$$
+  as a set of $2^n$ characters. 
+  
+  These characters for $\mathbb F_2^n$ form an alternate basis for the vector space of functions $f : \mathbb F_2^n \to \mathbb R$, which we endow with the inner product $\langle f, g \rangle  = \mathbb E [f(x)\cdot g(x)]$, where $x$ is uniform over $\mathbb F_2^n$. Thus, a quick calculation shows that
+  \[\mathbb E_{x \sim \mathbb F_2^n} [\chi_a(x) \cdot \chi_b(x)] = \begin{cases} 
+  1 &amp; \text { if } a = b \\
+  0 &amp; \text{ otherwise.}
+  \end{cases}\]
+   Therefore, the characters we have defined form an &lt;i&gt;orthonormal&lt;/i&gt; alternate basis, and we can write every function $f : \mathbb F_2^n \to \mathbb R$ as 
+  $$f(x) = \sum_{\gamma \in \mathbb F_2^n} \hat f(\gamma)\chi_\gamma(x),$$
+
+  which we call the Fourier decomposition.
+  
+  
+
+  
+
+&lt;/p&gt;
+
+&lt;p&gt;
+  
+  There has been a literal (and awesome) &lt;i&gt;&lt;a href=&quot;https://arxiv.org/abs/2105.10386&quot;&gt;textbook&lt;/a&gt;&lt;/i&gt; written about &lt;i&gt;just this example when $G = \mathbb F_2^n$&lt;/i&gt;, so if you thought the previous paragraph was cool and/or too brief, I encourage you to check that out.
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Regular Restrictions&lt;/h2&gt;
+
+&lt;p&gt;
+  Theoretical computer scientists care a lot about Boolean functions (nerds). In particular, we care how complex they are, or how good they are at discerning if a distribution is truly random, etc. One (visual, qualitative) way of deciding how complex a function is would be to look at the Fourier decomposition. If it doesn't have many terms (in other words, it is &quot;sparse&quot;), then we could say it is simple. On the other hand, if it has low degree (meaning $\max \{\gamma : \hat f(\gamma) \neq 0\}$ is small), then we could venture that it is a simple function. 
+&lt;/p&gt;
+
+&lt;p&gt;
+  Here's another notion of simplicity: how many of the input bits do I need to fix in order to guarantee the value of the function?
+&lt;/p&gt;
+
+&lt;p&gt;
+  This question has been asked before, and is known as the &lt;b&gt;certificate complexity&lt;/b&gt; of a function $f$. Actually, the way I have phrased above is not exactly accurate; more accurate would be to ask how many input bits one has to &lt;i&gt;reveal&lt;/i&gt; in the &lt;i&gt;worst case&lt;/i&gt; in order to fix $f$. If the distinction is not clear, consider the function $f = AND_n$. In the best case, we only need reveal a single 0. But, the certificate complexity of $AND_n$ is $n$ because in the worst case, we need to reveal $n$ zeroes to guarantee the function's value. It is well-known by now that the certificate complexity is actually polynomially related to the degree of any Boolean function $f$ (along with several other complexity measures, see)
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="fourier-analysis" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">So what are you studying for your PhD?</title><link href="http://localhost:4000/blog/wtf-is-theory" rel="alternate" type="text/html" title="So what are you studying for your PhD?" /><published>2021-10-19T08:45:13-07:00</published><updated>2021-10-19T08:45:13-07:00</updated><id>http://localhost:4000/blog/wtf-is-theory</id><content type="html" xml:base="http://localhost:4000/blog/wtf-is-theory">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -87,7 +322,7 @@ On a more serious note: I actually really do enjoy getting to the third option. 
     &lt;figcaption&gt;Where is the lie?&lt;/figcaption&gt;
   &lt;/figure&gt;
 
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="theory" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="https://mwhitmeyer.github.io/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sunflowers</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sunflowers">&lt;html&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="theory" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Encoding Sunflowers</title><link href="http://localhost:4000/blog/sunflowers" rel="alternate" type="text/html" title="Encoding Sunflowers" /><published>2021-09-07T08:45:13-07:00</published><updated>2021-09-07T08:45:13-07:00</updated><id>http://localhost:4000/blog/sunflowers</id><content type="html" xml:base="http://localhost:4000/blog/sunflowers">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -381,7 +616,7 @@ The remainder of the post will be an attempt to convey the ideas in the proof of
     &lt;/p&gt;
     &lt;p&gt;
       The last thing I will mention is that a super simple modification to the above proof idea was able to give an optimal upper bound of $r = \alpha p \log(k)$ for some constant $\alpha$. Namely, the idea is simple to partition into $2p$ buckets instead of $p$ buckets, and show that with probability $&gt;0$ at least half completely contain a set in the family. Surprisingly, this gets rid of the $\log(p)$ factor! See &lt;a href=&quot;https://arxiv.org/pdf/2009.09327.pdf&quot;&gt;here&lt;/a&gt; for the details, although that's pretty much the entire idea.
-    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="sunflowers" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/obfuscated-plagiarism</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/obfuscated-plagiarism">&lt;html&gt;
+    &lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="sunflowers" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Efficiently Detecting Obfuscated Plagiarism</title><link href="http://localhost:4000/blog/obfuscated-plagiarism" rel="alternate" type="text/html" title="Efficiently Detecting Obfuscated Plagiarism" /><published>2021-08-23T08:45:13-07:00</published><updated>2021-08-23T08:45:13-07:00</updated><id>http://localhost:4000/blog/obfuscated-plagiarism</id><content type="html" xml:base="http://localhost:4000/blog/obfuscated-plagiarism">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -579,7 +814,7 @@ If you don't get this reference then you are either much older than me or much y
 
 &lt;p&gt;
   Now back to theory!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="https://mwhitmeyer.github.io/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>https://mwhitmeyer.github.io/blog/parrep</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="plagiarism" /><summary type="html">figure { border: 1px #000000 solid; padding: 4px; margin: auto; }</summary></entry><entry><title type="html">Strong Parallel Repetition … is False</title><link href="http://localhost:4000/blog/parrep" rel="alternate" type="text/html" title="Strong Parallel Repetition … is False" /><published>2021-01-12T19:45:13-08:00</published><updated>2021-01-12T19:45:13-08:00</updated><id>http://localhost:4000/blog/parrep</id><content type="html" xml:base="http://localhost:4000/blog/parrep">&lt;!-- &lt;h2 class=&quot;section-heading&quot;&gt;Background&lt;/h2&gt; --&gt;
 &lt;p&gt;
 Before I begin, &lt;a href=&quot;https://homes.cs.washington.edu/~jrl/&quot;&gt;James Lee&lt;/a&gt; typed up some wonderful &lt;a href=&quot;https://tcsmath.wordpress.com/2008/09/21/lecture-1-cheating-with-foams/&quot;&gt;notes&lt;/a&gt; on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.
 
@@ -665,7 +900,7 @@ Ok, now that I've gotten your hopes up about just a couple of the cool reasons p
 
 &lt;p&gt;
   Whew. That's all for this post!
-&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="https://mwhitmeyer.github.io/blog/intro" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>https://mwhitmeyer.github.io/blog/intro</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/intro">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
+&lt;/p&gt;</content><author><name>Michael Whitmeyer</name></author><category term="parallel-repetition" /><summary type="html">Before I begin, James Lee typed up some wonderful notes on parallel repetition, in particular strong parallel repetition, and its connection to the unique games conjecture via max-cut. The latter parts of these notes (and in particular lecture 2) dive into the connections between the odd-cycle game and foams. What are foams? Foams are just tilings of \( \mathbb{R}^d \) by \( \mathbb{Z}^d \) by tiles of unit volume. For an (in fact, optimal) example in \( \mathbb{R}^2 \), see the background image at the top of this post.</summary></entry><entry><title type="html">Intro</title><link href="http://localhost:4000/blog/intro" rel="alternate" type="text/html" title="Intro" /><published>2021-01-06T00:00:00-08:00</published><updated>2021-01-06T00:00:00-08:00</updated><id>http://localhost:4000/blog/intro</id><content type="html" xml:base="http://localhost:4000/blog/intro">&lt;h2 class=&quot;section-heading&quot;&gt;Hi There&lt;/h2&gt;
 &lt;p&gt;
 On this blog you will find a disorganized mix of theoretical computer science and general musings about literally anything else I find interesting. Hence the name of the blog (which is certainly not as clever as I think it is). A nice diverse potpourri/amalgam/melange of topics is healthy right? Says the guy who finds something he likes and ignores literally everything else. Anyway, this blog is for me, as I venture forth into the vast (and intimidating) depths of both theoretical computer science and life. With any luck, this blog will keep me entertained, learning, and accountable. 
 &lt;/p&gt;

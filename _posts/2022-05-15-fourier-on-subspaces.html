@@ -1,0 +1,87 @@
+---
+layout: post
+title: "Fourier Analysis on Subspaces"
+subtitle: "\"Look! A trickle of water running through some dirt! I'd say our afternoon just got booked solid!\" <br /> -Bill Watterson"
+date: 2022-05-14 23:45:13 -0400
+background: '/img/posts/fourier-subspaces/fourier.jpeg'
+categories: fourier-analysis 
+published: false
+---
+
+<html>
+<head>
+<style>
+figure {
+  border: 1px #000000 solid;
+  padding: 4px;
+  margin: auto;
+}
+
+figcaption {
+  background-color: rgb(248, 247, 174);
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+}
+</style>
+</head>
+</html>
+
+
+
+<p>
+
+  First of all, I will stop with any sort of claim that I will post regularly. I will post when I feel like it. I have Covid<sup>&copy;</sup> now, so suffice it to say that I feel like it (in that I physically cannot do the things that normally keep me somewhat sane). 
+
+</p>
+<h2 class="section-heading">Intro</h2>
+<p>
+  Today, we are back with some more technical musings. Specifically, I want to talk about Fourier analysis. More specifically, I want to talk about Fourier analysis on $\mathbb F_2^n$. More specifically, I actually want to talk about Fourier analysis on some subspace $\mathcal V \subseteq \mathbb F_2^n$. That's a lot of specifics. 
+</p>
+
+<h3>Finite Fourier Analysis</h3>
+
+<p>
+  First of all, if you haven't watched 3blue1brown's <a href="https://www.youtube.com/watch?v=spUNpyF58BY">video</a> on the (continuous) Fourier transform, it's a really beautiful one. I, as an enormous nerd, have admittedly watched it more than once. As always, he does a wonderful job of explaining the intuition behind Fourier transforms. His video deals with Fourier analysis for functions over the reals, hence the continuity (and this is likely the type of Fourier transform you encountered during your undergrad). However, Fourier analysis works just as well for functions of the form $f: G \to \mathbb R$, where $G$ is a finite group. We call a function $\chi : G \to \mathbb C$ a <i>character</i> of $G$ if it is a homomorphism: $\chi(a + b) = \chi(a)\chi(b)$ and $\chi(-a) = \frac{1}{\chi(a)}$. These characters form a group under multiplication which we call $\hat G$. It turns out that for finite $G$, we have $|G| = |\hat G|$. Since $G$ is finite, it must also be that $\chi$ maps $g$ to a $p^{th}$ root of unity, where $p$ is the order of $g \in G$. This is all just a mere scratch on the surface of some really beautiful stuff, and I encourage you to check out these well-written <a href="https://sites.math.rutgers.edu/~sk1233/courses/finitefields-F13/fourier.pdf">notes</a> by Swastik Kopparty for more details and cool stuff about Fourier analysis on finite groups.
+</p>
+
+<p>
+  If that was all a lot of abstract nonsense, don't worry, we will work with the example $G = \mathbb F_2^n$ now.  Note that the order of everything in this group is 2, so the characters we are looking for must map $G$ to $\pm 1$. It turns out that we can choose 
+  $$\chi_a(x) = (-1)^{\langle x, a\rangle}$$
+  as a set of $2^n$ characters. 
+  
+  These characters for $\mathbb F_2^n$ form an alternate basis for the vector space of functions $f : \mathbb F_2^n \to \mathbb R$, which we endow with the inner product $\langle f, g \rangle  = \mathbb E [f(x)\cdot g(x)]$, where $x$ is uniform over $\mathbb F_2^n$. Thus, a quick calculation shows that
+  \[\mathbb E_{x \sim \mathbb F_2^n} [\chi_a(x) \cdot \chi_b(x)] = \begin{cases} 
+  1 & \text { if } a = b \\
+  0 & \text{ otherwise.}
+  \end{cases}\]
+   Therefore, the characters we have defined form an <i>orthonormal</i> alternate basis, and we can write every function $f : \mathbb F_2^n \to \mathbb R$ as 
+  $$f(x) = \sum_{\gamma \in \mathbb F_2^n} \hat f(\gamma)\chi_\gamma(x),$$
+
+  which we call the Fourier decomposition.
+  
+  
+
+  
+
+</p>
+
+<p>
+  
+  There has been a literal (and awesome) <i><a href="https://arxiv.org/abs/2105.10386">textbook</a></i> written about <i>just this example when $G = \mathbb F_2^n$</i>, so if you thought the previous paragraph was cool and/or too brief, I encourage you to check that out.
+</p>
+
+<h2 class="section-heading">Regular Restrictions</h2>
+
+<p>
+  Theoretical computer scientists care a lot about Boolean functions (nerds). In particular, we care how complex they are, or how good they are at discerning if a distribution is truly random, etc. One (visual, qualitative) way of deciding how complex a function is would be to look at the Fourier decomposition. If it doesn't have many terms (in other words, it is "sparse"), then we could say it is simple. On the other hand, if it has low degree (meaning $\max \{\gamma : \hat f(\gamma) \neq 0\}$ is small), then we could venture that it is a simple function. 
+</p>
+
+<p>
+  Here's another notion of simplicity: how many of the input bits do I need to fix in order to guarantee the value of the function?
+</p>
+
+<p>
+  This question has been asked before, and is known as the <b>certificate complexity</b> of a function $f$. Actually, the way I have phrased above is not exactly accurate; more accurate would be to ask how many input bits one has to <i>reveal</i> in the <i>worst case</i> in order to fix $f$. If the distinction is not clear, consider the function $f = AND_n$. In the best case, we only need reveal a single 0. But, the certificate complexity of $AND_n$ is $n$ because in the worst case, we need to reveal $n$ zeroes to guarantee the function's value. It is well-known by now that the certificate complexity is actually polynomially related to the degree of any Boolean function $f$ (along with several other complexity measures, see)
+</p>
