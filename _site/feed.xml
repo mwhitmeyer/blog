@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T15:59:17-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Crossing Numbers and a Sum-Product Theorem.</title><link href="https://mwhitmeyer.github.io/blog/sum-product" rel="alternate" type="text/html" title="Crossing Numbers and a Sum-Product Theorem." /><published>2022-06-16T08:45:13-07:00</published><updated>2022-06-16T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sum-product</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sum-product">&lt;html&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="https://mwhitmeyer.github.io/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://mwhitmeyer.github.io/blog/" rel="alternate" type="text/html" /><updated>2022-06-17T16:02:28-07:00</updated><id>https://mwhitmeyer.github.io/blog/feed.xml</id><title type="html">etcsetera</title><subtitle>theoretical computer science, but mainly etcetera</subtitle><author><name>Michael Whitmeyer</name></author><entry><title type="html">Crossing Numbers and a Sum-Product Theorem.</title><link href="https://mwhitmeyer.github.io/blog/sum-product" rel="alternate" type="text/html" title="Crossing Numbers and a Sum-Product Theorem." /><published>2022-06-16T08:45:13-07:00</published><updated>2022-06-16T08:45:13-07:00</updated><id>https://mwhitmeyer.github.io/blog/sum-product</id><content type="html" xml:base="https://mwhitmeyer.github.io/blog/sum-product">&lt;html&gt;
 &lt;head&gt;
 &lt;style&gt;
 figure {
@@ -66,7 +66,7 @@ I will &lt;b&gt;not&lt;/b&gt; be covering what is essentially the state-of-the-a
   &lt;/figure&gt;
 
   Here's another fun corollary that shows the power of this theorem.
-  &lt;div class=&quot;corollary&quot;&gt;
+  &lt;div class=&quot;lemma&quot;&gt;
     If $m = 3n-5$, then $G$ is not planar.
   &lt;/div&gt;
   &lt;div class=&quot;proof&quot;&gt;
@@ -128,7 +128,7 @@ I will &lt;b&gt;not&lt;/b&gt; be covering what is essentially the state-of-the-a
 
 Ok, we are so close to proving Ekeles' bound! Just one more corollary! 
 
-&lt;div class=&quot;corollary&quot;&gt;
+&lt;div class=&quot;lemma&quot;&gt;
   Suppose we have $n$ points in $\mathbb R^2$, the euclidean plane, and $\ell$ lines that pass through at least $k$ points, where $2 \leq k \leq \sqrt {n}$. Then we have the bound $\ell \leq O(n^2/k^3)$.
 &lt;/div&gt;
 
